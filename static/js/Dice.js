@@ -11,7 +11,7 @@ class Dice{
      * @return {Number} an integer representing the number of rolls remaining for a turn
     */
     get_rolls_remaining(){
-
+        return rolls_remaining_element;
     }
 
     /**
@@ -52,7 +52,14 @@ class Dice{
      * <br> Uses this.set to update dice
     */
     roll(){
-
+        this.rolls_remaining_element--;
+        for (let die of this.dice_elements){
+            let min = Math.ceil(1);
+            let max = Math.floor(5);
+            let random_int = Math.floor(Math.random() * (max - min + 1)) + min;
+            die.src=`/img/${this.photo_names[random_int]}.svg`;
+            console.log(random_int, die.src)
+        }
     }
 
     /**
@@ -72,7 +79,7 @@ class Dice{
      * @param {Object} element the <img> element representing the die to reserve
     */
     reserve(die_element){
-
+        die_element.classlist.toggle("reserve");
     }
 
     /**
