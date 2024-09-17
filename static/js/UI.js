@@ -14,7 +14,7 @@ for (let i = 0; i<5; i++){
 }
 let rolls_remaining_element = document.getElementById("rolls_remaining");
 
-let dice = new Dice(dice_elements, rolls_remaining_element);
+let dice = new Dice(dice_elements, Number(rolls_remaining_element.innerHTML));
 window.dice = dice; //useful for testing to add a reference to global window object
 
 
@@ -36,13 +36,13 @@ let score_elements = Array.from(document.getElementsByClassName("score"));
 //---------Event Handlers-------//
 function reserve_die_handler(event){
     console.log("Trying to reserve "+event.target.id);
-    dice.reserve(event.target.id)
+    dice.reserve(event.target.id);
 }
 
 function roll_dice_handler(){
     display_feedback("Rolling the dice...", "good");
     dice.roll();
-    rolls_remaining_element = dice.rolls_remaining_element;
+    rolls_remaining_element.innerHTML = dice.rolls_remaining_element;
     console.log("Dice values:", dice.get_values());
     console.log("Sum of all dice:", dice.get_sum());
     console.log("Count of all dice faces:", dice.get_counts());

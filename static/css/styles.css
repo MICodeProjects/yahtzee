@@ -45,7 +45,8 @@ button {
     font-size: 16px;
 }
 
-.reserve {
-    border: 2px solid #ffffff;
+.reserved {
+    border: 2px solid #a32323;
+    border-radius: 10px;
 }
 
