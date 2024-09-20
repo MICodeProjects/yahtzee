@@ -24,6 +24,8 @@ let category_elements = Array.from(document.getElementsByClassName("category"));
 for (let category of category_elements){
     category.addEventListener('keypress', function(event){
         if (event.key === 'Enter') {
+            rolls_remaining_element.innerHTML = parse(dice.rolls_remaining_element);
+            console.log("rolls remaining updated.")
             enter_score_handler(event);
         }
     });

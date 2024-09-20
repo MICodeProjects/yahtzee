@@ -39,10 +39,8 @@ class Dice{
             }else if (die.src.includes("six")){
                 values.push(6);
             }
-            console.log(die.src)
         }
 
-        console.log("Values are: ", values);
         return values;
     }
 
@@ -84,18 +82,22 @@ class Dice{
      * <br> Uses this.set to update dice
     */
     roll(){
+        let values = []
         if (this.rolls_remaining_element>0){
             this.rolls_remaining_element--;
             for (let die of this.dice_elements){
                 if (die.classList.contains("reserved")){
-                    continue;
+                    values.push(-1);
                 }else{
                     let min = Math.ceil(1);
                     let max = Math.floor(5);
                     let random_int = Math.floor(Math.random() * (max - min + 1)) + min;
-                    die.src=`/img/${this.photo_names[random_int]}.svg`;
+                    values.push(random_int)
+
                 }
             }
+            this.set(values, this.rolls_remaining_element)
+            
         }
     }
 
@@ -105,11 +107,11 @@ class Dice{
     */
     reset(){
         for (let die of this.dice_elements){
-            die.src="/img/blank.svg";
             if (die.classList.contains("reserved")){
                 die.classList.remove("reserved");
             }
         }
+        this.set([0,0,0,0,0], 3);  
     }
 
     /**
@@ -122,7 +124,11 @@ class Dice{
     */
     reserve(die_element){
         let die = document.getElementById(die_element)
-        die.classList.toggle("reserved");
+        if (die.src.includes("blank")){
+            console.log("Cannot reserve. Die is blank.")
+        }else{
+            die.classList.toggle("reserved");
+        }
     }
 
     /**
@@ -135,10 +141,16 @@ class Dice{
      *
     */
     set(new_dice_values, new_rolls_remaining){
-        for (let i=0;i<this.dice_elements.length;i++){
-            this.dice_elements[i].src=`/img/${new_dice_values[i]}.svg`;
+       let i=0;
+        for (let die of this.dice_elements){
+            if (new_dice_values[i] !=-1){
+                die.src=`/img/${this.photo_names[new_dice_values[this.dice_elements.indexOf(die)]]}.svg`;
+            }
+
+            i++;
         }
-        this.rolls_remaining_element=new_rolls_remaining
+        this.rolls_remaining_element=new_rolls_remaining;
+
     }
 }
 
