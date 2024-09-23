@@ -1,7 +1,7 @@
 console.log("Dice.js connected")
 class Dice{
     constructor(dice_elements, rolls_remaining_element){
-        this.rolls_remaining_element= Number(rolls_remaining_element);
+        this.rolls_remaining_element=rolls_remaining_element;
         this.dice_elements= dice_elements;
         this.photo_names=["blank", "one", "two", "three", "four", "five", "six"]
     }
@@ -11,7 +11,8 @@ class Dice{
      * @return {Number} an integer representing the number of rolls remaining for a turn
     */
     get_rolls_remaining(){
-        return this.rolls_remaining_element;
+        console.log(Number(this.rolls_remaining_element.textContent))
+        return Number(this.rolls_remaining_element.textContent);
     }
 
     /**
@@ -83,8 +84,8 @@ class Dice{
     */
     roll(){
         let values = []
-        if (this.rolls_remaining_element>0){
-            this.rolls_remaining_element--;
+        if (Number(Number(document.getElementById("rolls_remaining").innerHTML))>0){
+            document.getElementById("rolls_remaining").innerHTML = Number(document.getElementById("rolls_remaining").innerHTML)-1;
             for (let die of this.dice_elements){
                 if (die.classList.contains("reserved")){
                     values.push(-1);
@@ -96,7 +97,7 @@ class Dice{
 
                 }
             }
-            this.set(values, this.rolls_remaining_element)
+            this.set(values, Number(document.getElementById("rolls_remaining").innerHTML))
             
         }
     }
@@ -123,11 +124,10 @@ class Dice{
      * @param {Object} element the <img> element representing the die to reserve
     */
     reserve(die_element){
-        let die = document.getElementById(die_element)
-        if (die.src.includes("blank")){
+        if (die_element.src.includes("blank")){
             console.log("Cannot reserve. Die is blank.")
         }else{
-            die.classList.toggle("reserved");
+            die_element.classList.toggle("reserved");
         }
     }
 
@@ -149,7 +149,8 @@ class Dice{
 
             i++;
         }
-        this.rolls_remaining_element=new_rolls_remaining;
+        this.rolls_remaining_element.textContent = String(new_rolls_remaining);
+        document.getElementById("rolls_remaining").innerHTML = String(new_rolls_remaining)
 
     }
 }
