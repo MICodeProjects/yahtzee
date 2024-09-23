@@ -84,17 +84,14 @@ class Dice{
     */
     roll(){
         let values = []
-        if (Number(Number(document.getElementById("rolls_remaining").innerHTML))>0){
+        if (Number(document.getElementById("rolls_remaining").innerHTML)>0){
             document.getElementById("rolls_remaining").innerHTML = Number(document.getElementById("rolls_remaining").innerHTML)-1;
             for (let die of this.dice_elements){
                 if (die.classList.contains("reserved")){
                     values.push(-1);
                 }else{
-                    let min = Math.ceil(1);
-                    let max = Math.floor(5);
-                    let random_int = Math.floor(Math.random() * (max - min + 1)) + min;
+                    let random_int = Math.floor(Math.random()*6)+1
                     values.push(random_int)
-
                 }
             }
             this.set(values, Number(document.getElementById("rolls_remaining").innerHTML))
