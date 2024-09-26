@@ -151,21 +151,6 @@ class Dice{
 
     }
 }
-HTMLAllCollectionlet scorecardObject = {};
-        scorecardObject["rolls_remaining"] = this.dice.get_rolls_remaining()
 
-        let lowerCard = document.getElementsByClassName("lower");
-        let upperCard = document.getElementsByClassName("upper");
-        scorecardObject["lower"] = {};
-        scorecardObject["upper"] = {};
-        console.log(upperCard)
-        for (let i;i<7;i++){
-            scorecardObject["upper"][upperCard[i].getAttribute('id')] = 0 //parseInt(upperCard[i].innerHTML)
-            if (score<6){
-                scorecardObject["lower"][lowerCard[i].getAttribute('id')] = 0//parseInt(lowerCard[i].innerHTML)
-            }
-        }
-        console.log(scorecardObject);
-        return scorecardObject;
 
 export default Dice;
