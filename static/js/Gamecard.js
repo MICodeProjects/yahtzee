@@ -13,7 +13,7 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the scorecard is full
      */
     is_finished(){
-
+    
     }
 
     /**
@@ -27,9 +27,20 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
     is_valid_score(category, value){
-        // if (this.to_object()["upper"].keys().includes(category)){
-        //     let dice = 
+        let scorecard = this.to_object()
+        let diceCounts = this.dice.getCounts()
+        if (scorecard["upper"].keys().includes(category)){
+            let categoryInd = this.dice.photo_names().indexOf(category);
+            let score = diceCounts[categoryInd]*categoryInd;
+            console.log(category, diceCounts[categoryInd], score)
+            return score==value;
+        }
+        // if (category == "three_of_a_kind"){
+        //     for (let die in diceCounts){
+        //         if ()
+        //     }
         // }
+
     }
 
     /**
@@ -113,15 +124,15 @@ class Gamecard{
         scorecardObject["upper"] = {};
         for (let card of upperCard){
             let val = -1;
-            if (card.innerHTML != ""){
-                val = parse(card.value)
+            if (card.value != ""){
+                val = card.value
             }
             scorecardObject["upper"][card.id.replace("_input","")] = val;
         }
         for (let card of lowerCard){
             let val = -1;
-            if (card.innerHTML != ""){
-                val = parse(card.value);
+            if (card.value != ""){
+                val = card.value;
             }
             scorecardObject["lower"][card.id.replace("_input","")] = val;
         }
