@@ -35,12 +35,43 @@ class Gamecard{
             console.log(category, diceCounts[categoryInd], score)
             return score==value;
         }
-        // if (category == "three_of_a_kind"){
-        //     for (let die in diceCounts){
-        //         if ()
-        //     }
-        // }
+        if (category == "three_of_a_kind"){
+            return this.xOfAKind(3).includes(value)
+        }
+        if (category == "four_of_a_kind"){
+            return this.xOfAKind(4).includes(value)
+        }
+        if (category == "yahtzee"){
+            return this.xOfAKind(5).includes(value)
+        }
+        if (category == "full_house"){
+            if (diceCounts.includes(2) && diceCounts.includes(3)){
+                return (value==this.dice.get_sum())
+            }
+        }
+        if (category =="large_straight"){
+            return value == 1+2+3+4+5+6;
+        }
+        if (category =="small_straight"){
+            return [2] == diceCounts.filter(function(die){
+                return (die != 1);
+            })
+        }
+        if (category =="chance"){
+            return (value == this.dice.get_sum())
+        }
+        
 
+    }
+
+    xOfAKind(freq){
+        let possibleScores = this.dice.getCounts.map(function(elt, die){
+            if (elt >=freq){
+                return freq*die
+            }
+            return -1
+        });
+        return possibleScores;
     }
 
     /**
@@ -49,7 +80,9 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-
+        // let total=0;
+        // let scorecard = this.to_object();
+        // for (let category of )
     }
 
     /**
@@ -114,6 +147,13 @@ class Gamecard{
      * @return {Object} an object version of the scorecard
      *
      */
+
+    isNumeric(scoreInput) {
+        if (isNaN(scoreInput == false && isNaN(parseFloat(scoreInput)==false))){
+            return true;
+        }
+    }
+
     to_object(){
         let scorecardObject = {};
         scorecardObject["rolls_remaining"] = this.dice.get_rolls_remaining()
@@ -124,14 +164,14 @@ class Gamecard{
         scorecardObject["upper"] = {};
         for (let card of upperCard){
             let val = -1;
-            if (card.value != ""){
-                val = card.value
+            if (this.isNumeric(card.value)){
+                val = parseInt(card.value)
             }
             scorecardObject["upper"][card.id.replace("_input","")] = val;
         }
         for (let card of lowerCard){
             let val = -1;
-            if (card.value != ""){
+            if (this.isNumeric(card.value)){
                 val = card.value;
             }
             scorecardObject["lower"][card.id.replace("_input","")] = val;
