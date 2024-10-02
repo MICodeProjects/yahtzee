@@ -51,7 +51,15 @@ function roll_dice_handler(){
 }
 
 function enter_score_handler(event){
-    console.log("Score entry attempted for: ", event.target.id);
+    console.log("Score entry attempted for: ", event.target.id, " for ", event.target.value);
+    if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==false){
+        event.target.value = "";
+        console.log("WRONG VALUE")
+        // update score here
+    }else{
+        console.log("RIGHT VALUE")
+        event.target.disabled==true;
+    }
 }
 
 

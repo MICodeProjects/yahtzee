@@ -27,35 +27,51 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
     is_valid_score(category, value){
+        // check if value is int
+        if (this.isNumeric(value)==false){
+            return false;
+        }
+
+        // setting up
         let scorecard = this.to_object()
-        let diceCounts = this.dice.getCounts()
-        if (scorecard["upper"].keys().includes(category)){
-            let categoryInd = this.dice.photo_names().indexOf(category);
-            let score = diceCounts[categoryInd]*categoryInd;
-            console.log(category, diceCounts[categoryInd], score)
+        let diceCounts = this.dice.get_counts()
+
+        // upper category
+        if (this.dice.photo_names.includes(category)){
+            let categoryInd = this.dice.photo_names.indexOf(category);
+            let score = diceCounts[categoryInd-1]*categoryInd;
+            console.log(categoryInd)
+            console.log(`category is ${category}, dice count is ${diceCounts[categoryInd-1]}, should be score is ${score}, and dice number is ${categoryInd}`)
             return score==value;
         }
+
+        // lower category
         if (category == "three_of_a_kind"){
-            return this.xOfAKind(3).includes(value)
+            return ((diceCounts.includes(3) || diceCounts.includes(4) || diceCounts.includes(5)) && this.dice.get_sum() == value)
         }
         if (category == "four_of_a_kind"){
-            return this.xOfAKind(4).includes(value)
+            if ((diceCounts.includes(4) || diceCounts.includes(5)) && this.dice.get_sum() == value){
+                return true;
+            }
+            return false;
         }
         if (category == "yahtzee"){
-            return this.xOfAKind(5).includes(value)
+            return (diceCounts.includes(5) && value==50);
         }
         if (category == "full_house"){
             if (diceCounts.includes(2) && diceCounts.includes(3)){
-                return (value==this.dice.get_sum())
+                return (value==25)
             }
+            return false;
         }
         if (category =="large_straight"){
-            return value == 1+2+3+4+5+6;
+            return ((diceCounts[5]==0 || diceCounts[0]==0)&& value==40);
+
         }
+        // doesnt work
         if (category =="small_straight"){
-            return [2] == diceCounts.filter(function(die){
-                return (die != 1);
-            })
+            count=0
+            
         }
         if (category =="chance"){
             return (value == this.dice.get_sum())
@@ -64,15 +80,7 @@ class Gamecard{
 
     }
 
-    xOfAKind(freq){
-        let possibleScores = this.dice.getCounts.map(function(elt, die){
-            if (elt >=freq){
-                return freq*die
-            }
-            return -1
-        });
-        return possibleScores;
-    }
+
 
     /**
     * Returns the current Grand Total score for a scorecard
@@ -80,16 +88,52 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-        // let total=0;
-        // let scorecard = this.to_object();
-        // for (let category of )
+        let total=0;
+        let scorecard = this.to_object();
+        for (let category of scorecard.keys()){
+            total = total + scorecard[category].reduce(function(acc,curScore){
+                if (curScore != -1){
+                    return acc + curScore
+                }
+                return acc;
+            })
+        }
+        return total;
     }
 
     /**
      * Updates all score elements for a scorecard
     */
     update_scores(){
-       
+       let scorecard =this.to_object()
+       for (category of scorecard){
+            if (category == 'lower'){
+                let lowerScore = scorecard[category].values().reduce(function(acc,cur){
+                    if (cur != ''){
+                        return acc + parseInt(cur)
+                    }
+                })
+            }else{
+                let upperScore = scorecard[category].values().reduce(function(acc,cur){
+                    if (cur != ''){
+                        return acc + parseInt(cur)
+                    }
+                    return acc
+                })
+
+            }
+       }
+       document.getElementById("upper_score").innerHTML = String(upperScore);
+       if (upperScore >63){
+           document.getElementById("upper_bonus").innerHTML = "35"
+           document.getElementByIdById("upper_total").innerHTML = String(upperScore + 35)
+       }else{
+            document.getElementById("upper_bonus").innerHTML = ""
+            document.getElementByIdById("upper_total").innerHTML = String(upperScore)
+       }
+       document.getElementById("lower_score").innerHTML = String(lowerScore)
+       document.getElementById("upper_total_lower").innerHTML = document.getElementById("upper_total").innerHTML;
+       document.getElementById("grand_total").innerHTML = parseInt(document.getElementById("upper_total").innerHTML) + lowerScore;
     }
 
     /**
@@ -118,7 +162,7 @@ class Gamecard{
      * @param {Object} gameObject the object version of the scorecard
     */
     load_scorecard(score_info){
-       
+       new
     }
 
     /**
@@ -148,11 +192,7 @@ class Gamecard{
      *
      */
 
-    isNumeric(scoreInput) {
-        if (isNaN(scoreInput == false && isNaN(parseFloat(scoreInput)==false))){
-            return true;
-        }
-    }
+
 
     to_object(){
         let scorecardObject = {};
@@ -163,29 +203,25 @@ class Gamecard{
         scorecardObject["lower"] = {};
         scorecardObject["upper"] = {};
         for (let card of upperCard){
-            let val = -1;
-            if (this.isNumeric(card.value)){
-                val = parseInt(card.value)
-            }
-            scorecardObject["upper"][card.id.replace("_input","")] = val;
+
+            scorecardObject["lower"][card.id.replace("_input","")] = card.value;
         }
         for (let card of lowerCard){
-            let val = -1;
-            if (this.isNumeric(card.value)){
-                val = card.value;
-            }
-            scorecardObject["lower"][card.id.replace("_input","")] = val;
+
+            scorecardObject["upper"][card.id.replace("_input","")] = card.value;
         }
 
 
         console.log(scorecardObject);
         return scorecardObject;
     }
+
+    isNumeric(scoreInput) {
+        if (isNaN(scoreInput) == false && isNaN(parseInt(scoreInput))==false && scoreInput.includes(".")==false){
+            return true;
+        }
+        return false;
+    }
 }
 
 export default Gamecard;
-
-
-
-
-
