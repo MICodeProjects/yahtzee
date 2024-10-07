@@ -58,7 +58,7 @@ function enter_score_handler(event){
         // update score here
     }else{
         console.log("RIGHT VALUE")
-        event.target.disabled==true;
+        event.target.disabled=true;
     }
 }
 

@@ -13,7 +13,21 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the scorecard is full
      */
     is_finished(){
-    
+        let check=false;
+        let scoreObject = this.to_object();
+        Object.keys(scoreObject).forEach(function(section){
+            if (section != "rolls_remaining"){
+                console.log()
+                check = Object.keys(scoreObject[section]).filter(function(category){
+                    return document.getElementById(`${category}_input`).disabled==true
+                })
+            }
+            if (check==false){
+                return false;
+            }
+        })
+        return true;
+        
     }
 
     /**
@@ -70,7 +84,21 @@ class Gamecard{
         }
         // doesnt work
         if (category =="small_straight"){
-            count=0
+            let sortedDice = this.dice.get_values().sort();
+            console.log("sorted dice ", sortedDice)
+            let count = 0;
+            for (let i=1;i<sortedDice.length;i++){
+                if (sortedDice[i] == sortedDice[i-1]+1){
+                    count++;
+                }else if (sortedDice[i]!=sortedDice[i-1]){
+                    count=0;
+                }
+                if (count==2){
+                    return true;
+                }
+                
+            }
+            return false;
             
         }
         if (category =="chance"){
@@ -105,16 +133,20 @@ class Gamecard{
      * Updates all score elements for a scorecard
     */
     update_scores(){
+       let lowerScore=0;
+       let upperScore=0;
+       let upperBonus=0;
+
        let scorecard =this.to_object()
        for (category of scorecard){
             if (category == 'lower'){
-                let lowerScore = scorecard[category].values().reduce(function(acc,cur){
+                lowerScore = scorecard[category].values().reduce(function(acc,cur){
                     if (cur != ''){
                         return acc + parseInt(cur)
                     }
                 })
             }else{
-                let upperScore = scorecard[category].values().reduce(function(acc,cur){
+                upperScore = scorecard[category].values().reduce(function(acc,cur){
                     if (cur != ''){
                         return acc + parseInt(cur)
                     }
@@ -123,17 +155,16 @@ class Gamecard{
 
             }
        }
-       document.getElementById("upper_score").innerHTML = String(upperScore);
        if (upperScore >63){
-           document.getElementById("upper_bonus").innerHTML = "35"
-           document.getElementByIdById("upper_total").innerHTML = String(upperScore + 35)
-       }else{
-            document.getElementById("upper_bonus").innerHTML = ""
-            document.getElementByIdById("upper_total").innerHTML = String(upperScore)
+           upperBonus=35;
        }
+       document.getElementById("upper_score").innerHTML = String(upperScore)
+       document.getElementById("upper_bonus").innerHTML = String(upperBonus)
+       document.getElementById("upper_total").innerHTML = String(upperScore + upperBonus)
+
        document.getElementById("lower_score").innerHTML = String(lowerScore)
-       document.getElementById("upper_total_lower").innerHTML = document.getElementById("upper_total").innerHTML;
-       document.getElementById("grand_total").innerHTML = parseInt(document.getElementById("upper_total").innerHTML) + lowerScore;
+       document.getElementById("upper_total_lower").innerHTML = String(upperScore);
+       document.getElementById("grand_total").innerHTML = String(upperScore + upperBonus + lowerScore);
     }
 
     /**
@@ -162,7 +193,18 @@ class Gamecard{
      * @param {Object} gameObject the object version of the scorecard
     */
     load_scorecard(score_info){
-       new
+        Object.keys(score_info).forEach(function(section){
+            if (section != "rolls_remaining"){
+                Object.keys(score_info[section]).forEach(function(category){
+                    console.log(`Section: ${section}, category: ${category}, value: ${score_info[section][category]}`)
+                    document.getElementById(`${category}_input`).value = score_info[section][category];
+                    document.getElementById(`${category}_input`).disabled = true;
+
+                })
+            }else{
+                document.getElementById("rolls_remaining").innerHTML = score_info["rolls_remaining"]
+            }
+        })
     }
 
     /**
@@ -217,7 +259,7 @@ class Gamecard{
     }
 
     isNumeric(scoreInput) {
-        if (isNaN(scoreInput) == false && isNaN(parseInt(scoreInput))==false && scoreInput.includes(".")==false){
+        if (isNaN(scoreInput) == false && isNaN(parseInt(scoreInput))==false && String(scoreInput).includes('.')==false){
             return true;
         }
         return false;
