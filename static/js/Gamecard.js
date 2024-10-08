@@ -13,20 +13,16 @@ class Gamecard{
      * @return {Boolean} a Boolean value indicating whether the scorecard is full
      */
     is_finished(){
-        let check=false;
-        let scoreObject = this.to_object();
-        Object.keys(scoreObject).forEach(function(section){
-            if (section != "rolls_remaining"){
-                console.log()
-                check = Object.keys(scoreObject[section]).filter(function(category){
-                    return document.getElementById(`${category}_input`).disabled==true
-                })
+        let scoreObject = Object.keys(this.to_object()["upper"]).concat(Object.keys(this.to_object()["lower"]));
+        console.log(scoreObject)
+        return scoreObject.every(function(category){
+            console.log(category, document.getElementById(`${category}_input`).disabled)
+            if (document.getElementById(`${category}_input`).disabled==true){
+                return true;
             }
-            if (check==false){
-                return false;
-            }
-        })
-        return true;
+            return false;
+        },0)
+           
         
     }
 
@@ -44,6 +40,11 @@ class Gamecard{
         // check if value is int
         if (this.isNumeric(value)==false){
             return false;
+        }
+
+        // check if value is 0 (always valid score)
+        if (value==0){
+            return true;
         }
 
         // setting up
@@ -116,18 +117,37 @@ class Gamecard{
     * @return {Number} an integer value representing the curent game score
     */
     get_score(){
-        let total=0;
-        let scorecard = this.to_object();
-        for (let category of scorecard.keys()){
-            total = total + scorecard[category].reduce(function(acc,curScore){
-                if (curScore != -1){
-                    return acc + curScore
-                }
-                return acc;
-            })
-        }
-        return total;
+        let total = 0;
+
+ 
+        let scorecard =this.to_object()
+        // Upper
+        let upperScore = Object.keys(scorecard["upper"]).reduce(function(acc,cur){
+            console.log(cur, acc)
+            if (document.getElementById(`${cur}_input`).disabled==true){
+                return acc + Number(document.getElementById(`${cur}_input`).value)
+            }
+            return acc;
+        },0)
+
+            // bonus check
+            if (total > 63){
+                total+=35;
+            }
+            
+        // LOWER
+        let lowerScore = Object.keys(scorecard["lower"]).reduce(function(acc,cur){
+            console.log(cur, acc)
+            if (document.getElementById(`${cur}_input`).disabled==true){
+                return acc + Number(document.getElementById(`${cur}_input`).value)
+            }
+            return acc
+        },0)
+                   
+        return total+lowerScore+upperScore;
     }
+
+    
 
     /**
      * Updates all score elements for a scorecard
@@ -138,26 +158,29 @@ class Gamecard{
        let upperBonus=0;
 
        let scorecard =this.to_object()
-       for (category of scorecard){
-            if (category == 'lower'){
-                lowerScore = scorecard[category].values().reduce(function(acc,cur){
-                    if (cur != ''){
-                        return acc + parseInt(cur)
-                    }
-                })
-            }else{
-                upperScore = scorecard[category].values().reduce(function(acc,cur){
-                    if (cur != ''){
-                        return acc + parseInt(cur)
-                    }
-                    return acc
-                })
-
+       // Upper
+        upperScore = Object.keys(scorecard["upper"]).reduce(function(acc,cur){
+            console.log(cur, acc)
+            if (document.getElementById(`${cur}_input`).disabled==true){
+                return acc + Number(document.getElementById(`${cur}_input`).value)
             }
-       }
-       if (upperScore >63){
-           upperBonus=35;
-       }
+            return acc;
+        },0)
+
+        // bonus check
+        if (upperScore > 63){
+            upperBonus=35;
+        }
+        
+    // LOWER
+        lowerScore = Object.keys(scorecard["lower"]).reduce(function(acc,cur){
+            console.log(cur, acc)
+            if (document.getElementById(`${cur}_input`).disabled==true){
+                return acc + Number(document.getElementById(`${cur}_input`).value)
+            }
+            return acc
+        },0)
+
        document.getElementById("upper_score").innerHTML = String(upperScore)
        document.getElementById("upper_bonus").innerHTML = String(upperBonus)
        document.getElementById("upper_total").innerHTML = String(upperScore + upperBonus)
@@ -193,12 +216,19 @@ class Gamecard{
      * @param {Object} gameObject the object version of the scorecard
     */
     load_scorecard(score_info){
-        Object.keys(score_info).forEach(function(section){
+        let names = ["upper", "lower", "rolls_remaining"]
+        names.forEach(function(section){
             if (section != "rolls_remaining"){
                 Object.keys(score_info[section]).forEach(function(category){
                     console.log(`Section: ${section}, category: ${category}, value: ${score_info[section][category]}`)
-                    document.getElementById(`${category}_input`).value = score_info[section][category];
-                    document.getElementById(`${category}_input`).disabled = true;
+                    if (score_info[section][category] == -1){
+                        document.getElementById(`${category}_input`).value = "";
+                        document.getElementById(`${category}_input`).disabled = false;
+
+                    }else{
+                        document.getElementById(`${category}_input`).value = score_info[section][category];
+                        document.getElementById(`${category}_input`).disabled = true;
+                    }
 
                 })
             }else{
@@ -212,21 +242,21 @@ class Gamecard{
      * {
             "rolls_remaining":0,
             "upper":{
-                "one":-1,
-                "two":-1,
-                "three":-1,
-                "four":-1,
-                "five":-1,
-                "six":-1
+                "one":3,
+                "two":5,
+                "three":20,
+                "four":19,
+                "five":30,
+                "six":1
             },
             "lower":{
-                "three_of_a_kind":-1,
-                "four_of_a_kind":-1,
-                "full_house":-1,
-                "small_straight":-1,
-                "large_straight":-1,
-                "yahtzee":-1,
-                "chance":-1
+                "three_of_a_kind":6,
+                "four_of_a_kind":3,
+                "full_house":0,
+                "small_straight":4,
+                "large_straight":23,
+                "yahtzee":50,
+                "chance":2
             }
         }
      *
@@ -240,21 +270,26 @@ class Gamecard{
         let scorecardObject = {};
         scorecardObject["rolls_remaining"] = this.dice.get_rolls_remaining()
 
-        let lowerCard = document.getElementsByClassName("lower");
-        let upperCard = document.getElementsByClassName("upper");
+        let lowerCard = document.getElementsByClassName("lower category");
+        let upperCard = document.getElementsByClassName("upper category");
         scorecardObject["lower"] = {};
         scorecardObject["upper"] = {};
         for (let card of upperCard){
-
-            scorecardObject["lower"][card.id.replace("_input","")] = card.value;
+            if (card.disabled == false || card.value == ""){
+                scorecardObject["upper"][card.id.replace("_input","")] =-1
+            }else {
+                scorecardObject["upper"][card.id.replace("_input","")] = card.value;
+            }
         }
         for (let card of lowerCard){
-
-            scorecardObject["upper"][card.id.replace("_input","")] = card.value;
+            if (card.disabled == false || card.value == ""){
+                scorecardObject["lower"][card.id.replace("_input","")] =-1
+            }else {
+                scorecardObject["lower"][card.id.replace("_input","")] = card.value;
+            }
         }
 
 
-        console.log(scorecardObject);
         return scorecardObject;
     }
 

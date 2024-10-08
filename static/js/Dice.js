@@ -147,7 +147,7 @@ class Dice{
             i++;
         }
         this.rolls_remaining_element.textContent = String(new_rolls_remaining);
-        if (new_rolls_remaining != Nan){
+        if (new_rolls_remaining != NaN){
             document.getElementById("rolls_remaining").innerHTML = String(new_rolls_remaining)
         }else{
             document.getElementById("rolls_remaining").innerHTML = String(3)
