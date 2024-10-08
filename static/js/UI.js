@@ -59,6 +59,7 @@ function enter_score_handler(event){
     }else{
         console.log("RIGHT VALUE")
         event.target.disabled=true;
+        gamecard.update_scores();
     }
 }
 
