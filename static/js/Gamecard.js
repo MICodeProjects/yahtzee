@@ -224,7 +224,6 @@ class Gamecard{
         names.forEach(function(section){
             if (section != "rolls_remaining"){
                 Object.keys(score_info[section]).forEach(function(category){
-                    console.log(`Section: ${section}, category: ${category}, value: ${score_info[section][category]}`)
                     if (score_info[section][category] == -1){
                         document.getElementById(`${category}_input`).value = "";
                         document.getElementById(`${category}_input`).disabled = false;
@@ -271,7 +270,6 @@ class Gamecard{
 
 
     to_object(){
-        // let card = NaN;
         let scorecardObject = {
             "rolls_remaining":0,
             "upper":{

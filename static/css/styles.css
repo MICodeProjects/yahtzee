@@ -55,3 +55,10 @@ button {
     border-radius: 10px;
 }
 
+.good {
+    color: green;
+}
+
+.bad {
+    color: #a32323;
+}

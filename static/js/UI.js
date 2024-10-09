@@ -6,6 +6,12 @@ import Gamecard from './Gamecard.js';
 let roll_button = document.getElementById('roll_button'); 
 roll_button.addEventListener('click', roll_dice_handler);
 
+let save_game = document.getElementById("save_game");
+save_game.addEventListener('click', save_game_handler)
+
+let load_game = document.getElementById("load_game");
+load_game.addEventListener("click", load_game_handler)
+
 let dice_elements =[];
 for (let i = 0; i<5; i++){
     let die = document.getElementById("die_"+i);
@@ -25,7 +31,6 @@ for (let category of category_elements){
     category.addEventListener('keypress', function(event){
         if (event.key === 'Enter') {
             rolls_remaining_element.innerHTML = parseInt(dice.rolls_remaining_element.innerHTML);
-            console.log("rolls remaining updated.")
             enter_score_handler(event);
         }
     });
@@ -51,18 +56,36 @@ function roll_dice_handler(){
 }
 
 function enter_score_handler(event){
+    let feedback = document.getElementById("feedback")
     console.log("Score entry attempted for: ", event.target.id, " for ", event.target.value);
-    if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==false){
-        event.target.value = "";
-        console.log("WRONG VALUE")
-        // update score here
-    }else{
-        console.log("RIGHT VALUE")
+    if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==true){
         event.target.disabled=true;
         gamecard.update_scores();
+        feedback.classList.add("green")
+        feedback.classList.remove('red')
+
+        if (gamecard.is_finished()==true){
+            feedback.innerHTML = "Scorecard completed 🥳"
+        }else{
+            feedback.innerHTML = "Valid score entered 😁"
+        }
+
+    }else{
+
+        event.target.value = "";
+        feedback.classList.add("red")
+        feedback.classList.remove('green')
+        feedback.innerHTML = "Invalid score entered"       
     }
 }
 
+function save_game_handler(event){
+    gamecard.
+}
+
+function load_game_handler(event){
+
+}
 
 
 //------Feedback ---------//
