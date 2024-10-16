@@ -238,6 +238,7 @@ class Gamecard{
                 document.getElementById("rolls_remaining").innerHTML = score_info["rolls_remaining"]
             }
         })
+        this.update_scores();
     }
 
     /**

@@ -6,6 +6,11 @@ import Gamecard from './Gamecard.js';
 let roll_button = document.getElementById('roll_button'); 
 roll_button.addEventListener('click', roll_dice_handler);
 
+let valid_score_count = 0;
+
+let username = document.getElementById("uname").innerHTML.replace("Yahtzee: ", "")
+console.log(`Username is ${username}`)
+
 let save_game = document.getElementById("save_game");
 save_game.addEventListener('click', save_game_handler)
 
@@ -47,8 +52,14 @@ function reserve_die_handler(event){
 }
 
 function roll_dice_handler(){
-    display_feedback("Rolling the dice...", "good");
-    dice.roll();
+    if (Number(document.getElementById("rolls_remaining").innerHTML) >0){
+        dice.roll();
+        document.getElementById("feedback").innerHTML = ""
+        document.getElementById("feedback").classList.remove("good")
+        document.getElementById("feedback").classList.remove('bad')
+    }else{
+        display_feedback("ERROR ERROR you do NOT have enough rolls!!!", "bad") 
+    }
     // rolls_remaining_element.innerHTML = dice.rolls_remaining_element;
     console.log("Dice values:", dice.get_values());
     console.log("Sum of all dice:", dice.get_sum());
@@ -56,34 +67,74 @@ function roll_dice_handler(){
 }
 
 function enter_score_handler(event){
-    let feedback = document.getElementById("feedback")
     console.log("Score entry attempted for: ", event.target.id, " for ", event.target.value);
-    if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==true){
+    if (dice.get_sum() == 0){
+        display_feedback("ERROR ERROR cannot enter a score when dice are blank", "bad")  
+
+    }else if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==true){
         event.target.disabled=true;
         gamecard.update_scores();
-        feedback.classList.add("green")
-        feedback.classList.remove('red')
-
-        if (gamecard.is_finished()==true){
-            feedback.innerHTML = "Scorecard completed 🥳"
-        }else{
-            feedback.innerHTML = "Valid score entered 😁"
-        }
+        valid_score_count++;
+        display_feedback("Score entered successfully. New turn initiating", "good")
+        console.log("turn completed")
+        document.getElementById("rolls_remaining").innerHTML = 3;
+        valid_score_count=0;
+        dice.reset()
 
     }else{
-
         event.target.value = "";
-        feedback.classList.add("red")
-        feedback.classList.remove('green')
-        feedback.innerHTML = "Invalid score entered"       
+        display_feedback("Invalid score entered", "bad") 
+
     }
+    if (gamecard.is_finished()==true){
+        display_feedback("Scorecard completed!! Hooray.", "good") 
+        dice.reset()
+        document.getElementById("rolls_remaining").innerHTML = 0;
+
+    }
+
+
+
 }
 
 function save_game_handler(event){
-    gamecard.
+    let savedGame = gamecard.to_object()
+    localStorage.setItem("yahtzee", JSON.stringify(savedGame));
+    display_feedback("Game saved successfully", "good")
+    console.log(savedGame)
+    // let savedGame = gamecard.to_object()
+    // let betterSavedGame = {"rolls_remaining":savedGame.rolls_remaining}
+    // Object.keys(savedGame).forEach(function(section){
+    //     if (section != "rolls_remaining"){
+    //         betterSavedGame[section] = {}
+    //         Object.keys(savedGame).forEach(function(category){
+    //             if (savedGame[section][category]!=-1){
+    //                 betterSavedGame[section][category]=savedGame[section][category]
+    //             }
+    //         })}
+
+    // })
+    
+    // betterSavedGame["dice_values"] = dice.get_values()
+
+    // localStorage.setItem("yahtzee", JSON.stringify(betterSavedGame));
+
+    // display_feedback("Game saved successfully", "good")
 }
 
 function load_game_handler(event){
+    let loadedGame = localStorage.getItem("yahtzee")
+    if (loadedGame != null){
+        let parsedGame =  JSON.parse(loadedGame)
+        gamecard.load_scorecard(parsedGame);
+        console.log(parsedGame)
+        display_feedback("Game loaded successfully", "good")
+    }else{
+        display_feedback("No game can be loaded", "bad")
+    }
+    gamecard.update_scores()
+
+    
 
 }
 
@@ -91,5 +142,16 @@ function load_game_handler(event){
 //------Feedback ---------//
 function display_feedback(message, context){
     console.log(context, "Feedback: ", message);
+    document.getElementById("feedback").innerHTML=message;
+    if (context == "good"){
+        document.getElementById("feedback").classList.remove("bad")
+        document.getElementById("feedback").classList.add("good")
+
+    }else{
+        document.getElementById("feedback").classList.remove("good")
+        document.getElementById("feedback").classList.add("bad")
+
+
+    }
 
 }

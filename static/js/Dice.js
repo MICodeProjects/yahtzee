@@ -110,6 +110,8 @@ class Dice{
             }
         }
         this.set([0,0,0,0,0], 3);  
+
+
     }
 
     /**
@@ -147,12 +149,12 @@ class Dice{
             i++;
         }
         this.rolls_remaining_element.textContent = String(new_rolls_remaining);
-        if (new_rolls_remaining != NaN){
-            document.getElementById("rolls_remaining").innerHTML = String(new_rolls_remaining)
-        }else{
-            document.getElementById("rolls_remaining").innerHTML = String(3)
 
-        }
+        document.getElementById("rolls_remaining").innerHTML = new_rolls_remaining;
+        // document.getElementById("feedback").innerHTML = ""
+        // document.getElementById("feedback").classList.remove("good")
+        // document.getElementById("feedback").classList.remove("bad")
+        
 
     }
 }
