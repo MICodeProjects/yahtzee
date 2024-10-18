@@ -102,24 +102,7 @@ function save_game_handler(event){
     localStorage.setItem("yahtzee", JSON.stringify(savedGame));
     display_feedback("Game saved successfully", "good")
     console.log(savedGame)
-    // let savedGame = gamecard.to_object()
-    // let betterSavedGame = {"rolls_remaining":savedGame.rolls_remaining}
-    // Object.keys(savedGame).forEach(function(section){
-    //     if (section != "rolls_remaining"){
-    //         betterSavedGame[section] = {}
-    //         Object.keys(savedGame).forEach(function(category){
-    //             if (savedGame[section][category]!=-1){
-    //                 betterSavedGame[section][category]=savedGame[section][category]
-    //             }
-    //         })}
-
-    // })
     
-    // betterSavedGame["dice_values"] = dice.get_values()
-
-    // localStorage.setItem("yahtzee", JSON.stringify(betterSavedGame));
-
-    // display_feedback("Game saved successfully", "good")
 }
 
 function load_game_handler(event){
@@ -144,11 +127,11 @@ function display_feedback(message, context){
     console.log(context, "Feedback: ", message);
     document.getElementById("feedback").innerHTML=message;
     if (context == "good"){
-        document.getElementById("feedback").classList.remove("bad")
+        document.getElementById("feedback").className = ""
         document.getElementById("feedback").classList.add("good")
 
     }else{
-        document.getElementById("feedback").classList.remove("good")
+        document.getElementById("feedback").className = ""
         document.getElementById("feedback").classList.add("bad")
 
 
