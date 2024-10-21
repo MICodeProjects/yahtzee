@@ -3,6 +3,7 @@ import Dice from './Dice.js';
 import Gamecard from './Gamecard.js';
 
 //-------Dice Setup--------//
+display_feedback("New game initiated successfully", "good")
 let roll_button = document.getElementById('roll_button'); 
 roll_button.addEventListener('click', roll_dice_handler);
 
@@ -74,15 +75,11 @@ function enter_score_handler(event){
     }else if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==true){
         event.target.disabled=true;
         gamecard.update_scores();
-        valid_score_count++;
         display_feedback("Score entered successfully. New turn initiating", "good")
-        console.log("turn completed")
         document.getElementById("rolls_remaining").innerHTML = 3;
-        valid_score_count=0;
         dice.reset()
 
     }else{
-        event.target.value = "";
         display_feedback("Invalid score entered", "bad") 
 
     }
@@ -126,15 +123,6 @@ function load_game_handler(event){
 function display_feedback(message, context){
     console.log(context, "Feedback: ", message);
     document.getElementById("feedback").innerHTML=message;
-    if (context == "good"){
-        document.getElementById("feedback").className = ""
-        document.getElementById("feedback").classList.add("good")
-
-    }else{
-        document.getElementById("feedback").className = ""
-        document.getElementById("feedback").classList.add("bad")
-
-
-    }
+    document.getElementById('feedback').classList = context;
 
 }
