@@ -325,7 +325,7 @@ class Scorecard:
 if __name__ == '__main__':
     import os
     #print("Current working directory:", os.getcwd())
-    DB_location=f"{os.getcwd()}/Models/yahtzeeDB.db"
+    DB_location=f"{os.getcwd()}/yahtzeeDB.db"
     #print("location", DB_location)
     Users = User(DB_location, "users")
     Users.initialize_table()

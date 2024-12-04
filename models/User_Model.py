@@ -235,7 +235,7 @@ class User:
 if __name__ == '__main__':
     import os
     print("Current working directory:", os.getcwd())
-    DB_location=f"{os.getcwd()}/Models/yahtzeeDB.db"
+    DB_location=f"{os.getcwd()}/yahtzeeDB.db"
     table_name = "users"
     
     Users = User(DB_location, table_name) 
