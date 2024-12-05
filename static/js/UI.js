@@ -7,7 +7,6 @@ display_feedback("New game initiated successfully", "good")
 let roll_button = document.getElementById('roll_button'); 
 roll_button.addEventListener('click', roll_dice_handler);
 
-let valid_score_count = 0;
 
 let username = document.getElementById("uname").innerHTML.replace("Yahtzee: ", "")
 console.log(`Username is ${username}`)

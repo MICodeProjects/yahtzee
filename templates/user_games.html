@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <link href="css/styles.css" rel="stylesheet" >
+        <title>Yahtzee - {{Username}}</title>
+    </head>
+
+    <body>
+        <h1>{{Username}} Games</h1>
+            <section id="feedback">
+                <feedback content id="feedback"></feedback>
+            </section>
+            <section id="previous_games">
+                <p>Games here</p>
+                <button id="delete_submit" type="submit">Delete</button>
+            </section>
+
+            <form action="/game">
+                <label for="game_name_input"><b>Game Name</b></label>
+                <input type="text" placeholder="Game Name" id="game_name_input" name="game_name" required>
+            
+                <button id="create_game_submit" type="submit">Create</button>
+                <button id="join_game_submit" type="submit">Delete</button>
+
+            </form>                
+            
+            <section id="high_scores">
+                <h2>Your High Scores</h2>
+                
+            </section>
+        
+
+
+        <footer>{% include 'partial/footer.html' %}</footer>
+    </body>
+
+</html>
