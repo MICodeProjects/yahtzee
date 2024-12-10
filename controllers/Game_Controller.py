@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask import request
 
-from models import Game_Model
+from Models import Game_Model
 game_DB_location = 'yahtzeeDB.db'
 Game = Game_Model.Game_Model(game_DB_location)
 

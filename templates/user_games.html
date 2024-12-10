@@ -9,6 +9,16 @@
             <section id="feedback">
                 <feedback content id="feedback"></feedback>
             </section>
+
+            <section id="past_games">
+                {% for game in past_games %}
+                    <p>{{ game_number }}. {{ game_name }}</p>  
+                    <button id="delete_game" type="submit">Delete</button>
+                {% endfor %}
+
+                
+            </section>
+
             <section id="previous_games">
                 <p>Games here</p>
                 <button id="delete_submit" type="submit">Delete</button>
@@ -25,7 +35,9 @@
             
             <section id="high_scores">
                 <h2>Your High Scores</h2>
-                
+                {% for score in high_scores %}
+                    <p>{{ number }}. {{ game_name }}: {{score}</p>}           
+                {% endfor %}
             </section>
         
 
