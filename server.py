@@ -17,8 +17,8 @@ app.add_url_rule('/', view_func=Session_Controller.login, methods = ['GET'])
 app.add_url_rule('/index', view_func=Session_Controller.login, methods = ['GET'])
 app.add_url_rule('/login', view_func=Session_Controller.login, methods = ['GET'])
 
-app.add_url_rule('/users', view_func=User_Controller.users, methods = ['POST', 'GET'])
-app.add_url_rule('/users/<username>', view_func=User_Controller.users, methods = ['GET'])
+app.add_url_rule('/users', view_func=User_Controller.user_create, methods = ['POST'])
+app.add_url_rule('/users/<username>', view_func=User_Controller.user_update, methods = ['POST'])
 
 #Start the server
 app.run(debug=True, port=5000)
