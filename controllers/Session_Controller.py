@@ -7,6 +7,9 @@ def login():
     username=request.args.get("username")
     password=request.args.get("password")
 
+    # if user password false: return render template with bad feedback of login.
+    
+
     return render_template('user_games.html', username=username, password=password)
 
 def index():

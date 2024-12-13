@@ -1,17 +1,17 @@
 <html>
     <head>
         <link href="css/styles.css" rel="stylesheet" >
-        <title>Yahtzee - {{Username}}</title>
+        <title>Yahtzee - {{username}}</title>
     </head>
 
     <body>
-        <h1>{{Username}} Games</h1>
+        <h1>{{username}} Games</h1>
             <section id="feedback">
                 <feedback content id="feedback"></feedback>
             </section>
 
-            <section id="past_games">
-                {% for game in past_games %}
+            <section id="all_games">
+                {% for game in all_games %}
                     <p>{{ game_number }}. {{ game_name }}</p>  
                     <button id="delete_game" type="submit">Delete</button>
                 {% endfor %}
@@ -24,7 +24,7 @@
                 <button id="delete_submit" type="submit">Delete</button>
             </section>
 
-            <form action="/game">
+            <form action="/game" method="post">
                 <label for="game_name_input"><b>Game Name</b></label>
                 <input type="text" placeholder="Game Name" id="game_name_input" name="game_name" required>
             
@@ -35,9 +35,9 @@
             
             <section id="high_scores">
                 <h2>Your High Scores</h2>
-                {% for score in high_scores %}
-                    <p>{{ number }}. {{ game_name }}: {{score}</p>}           
-                {% endfor %}
+                <!-- {% for score in high_scores %}
+                    <p>{{ number }}. {{ game_name }}: {{score}</p>       
+                {% endfor %} -->
             </section>
         
 
