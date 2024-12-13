@@ -9,8 +9,10 @@ def login():
 
     # if user password false: return render template with bad feedback of login.
     
-
-    return render_template('user_games.html', username=username, password=password)
+    if request.method=="GET":
+        return render_template('user_games.html', username=username, password=password)
+    else:
+        return render_template("login.html")
 
 def index():
     # can send info through route, query string, body

@@ -9,7 +9,13 @@
             <section id="feedback">
                 <feedback content id="feedback"></feedback>
             </section>
-            <form action="/game" method="post">
+                {% if context=="update" %}
+                    <form action="/users/{{username}}" method="post"> 
+                {% elif context=="create" %}
+                    <form action="/users" method="post"> 
+                {% elif context=="delete" %}
+                    <form action="/users/delete/{{username}}" method="post"> 
+                {% endif %}
                 <label for="username_input"><b>Username</b></label>
                 <!-- <input type="hidden" id="custId" name="user_id" value=id> -->
                 <input type="text" placeholder="Username" id="username_input" name="username" required>
@@ -19,11 +25,9 @@
 
                 <label for="password_input"><b>Email</b></label>
                 <input type="email" id="email_input" placeholder="Enter Email" name="email" required>
-                {% if context=="delete" %}
-                    <button id="delete_user_submit" type="submit">Delete</button>
-                {% else %}
-                    <button id="updatecreate_user_submit" type="submit">{{context}}</button>
-                {% endif %}
+                
+                <button id="delete_user_submit" type="submit">Delete</button>
+                <button id="updatecreate_user_submit" type="submit">{{context}}</button>
 
             </form>
         

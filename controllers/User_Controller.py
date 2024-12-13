@@ -12,7 +12,6 @@ def users():
     print(f"request.url={request.query_string}")
     print(f"request.url={request.args.get('name')}") #GET request & query string
     print(f"request.url={request.form.get('name')}") #POST request & form body
-    email=email
 
     # user_info={"username":username,"email":email, "password":password, "id":User.get()}
     if request.method=="POST": # create a user
@@ -30,19 +29,19 @@ def users():
 def single_user():
     print(f"request.url={request.url}")
     if request.method=="GET": # get user details page for update/delete
-        username=username
-        user_info=User.get(username=username)["data"]
-        return render_template("user_details.html", user_info, context="update")
+
+        return render_template("user_details.html", context="update")
     
     elif request.method=="POST": # update user
         User.update()
-
-        return render_template("user_details.html", username=username,)
+        username=username
+        user_info=User.get(username=username)["data"]
+        return render_template("user_details.html", username=username)
         
-
-    
+# router gets it, then puts it in controller, figures if its get or post, then sends it to 
 def user_delete():
     User.delete()
-    return render_template("login.html")
+    if request.method=="GET":
+        return render_template("login.html")
     
 
