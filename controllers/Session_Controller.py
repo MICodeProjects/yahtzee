@@ -1,5 +1,7 @@
 from flask import request
 from flask import render_template
+from models import User_Model
+
 
 def login():
     # curl "http://127.0.0.1:5000"   
@@ -8,10 +10,10 @@ def login():
     password=request.args.get("password")
 
     # if user password false: return render template with bad feedback of login.
-    
     if request.method=="GET":
+
         return render_template('user_games.html', username=username, password=password)
-    else:
+            
         return render_template("login.html")
 
 def index():
