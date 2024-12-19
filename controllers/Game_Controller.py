@@ -22,7 +22,7 @@ def game_user_delete(): # remove user from a game
     if request.method=="GET":
         return render_template("game.html")
 
-def game_user_game_page(): # get specific game for a user
+def game_user_game_page(username, game_name): # get specific game for a user
     if request.method=="GET":
         return render_template("game.html")
 

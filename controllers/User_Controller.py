@@ -26,24 +26,37 @@ def users():
         return render_template('user_games.html', username=username, feedback="")
     
     if request.method=="GET": # get user details page for create
-        return render_template("user_details.html", context="create", feedback="hello")
+        user_info={}
+        # user_info["username"]=""
+        # user_info["password"]=""
+        # user_info["email"]=""
+        return render_template("user_details.html", context="create", feedback="")
 
 
-def single_user():
-    print(f"request.url={request.url}")
+def single_user(username):
     if request.method=="GET": # get user details page for update/delete
-
-        return render_template("user_details.html", context="update")
+        print(f"args: {request.view_args}")
+        print(f"request.query_string {request.url}")
+        user = User.get(username=username)
+        print(f"user: {user}")
+        if user["status"]=="error":
+            return render_template("user_details.html", context="update", feedback=str(user["data"]))
+        user_info={}
+        user_info["username"]=username
+        user_info["password"]=user["data"]["password"] # add error recongitintion
+        user_info["email"]=user["data"]["email"]
+        return render_template("user_details.html", context="update", feedback="", username=user_info["username"], password=user_info["password"], email=user_info["email"])
     
     elif request.method=="POST": # update user
-        username=request.args.get("username")
-        password=request.args.get("password")
-        email=request.args.get("email")
-        user_info=User.get(username=username)
+        old_username=username
+        new_username=request.form.get("username")
+        password=request.form.get("password")
+        email=request.form.get("email")
+        user_info=User.get(username=old_username)
         if user_info["status"]=="error":
             return render_template("user_details.html", feedback=user_info["data"], context="update")
-        User.update({"id":user_info["data"]["id"], "username":username, "password":password, "email":email})
-        return render_template("user_details.html", username=username, context="update")
+        User.update({"id":user_info["data"]["id"], "username":new_username, "password":password, "email":email})
+        return render_template("user_details.html", username=new_username, context="update", feedback="")
         
 # router gets it, then puts it in controller, figures if its get or post, then sends it to 
 def user_delete():
