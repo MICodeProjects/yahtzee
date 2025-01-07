@@ -1,35 +1,35 @@
 <html>
     <head>
-        <link href="css/styles.css" rel="stylesheet" >
-        <title>Yahtzee: Login</title>
+        <link href="static/css/styles.css" rel="stylesheet" >
+        <title>Yahtzee: User Details</title>
     </head>
 
     <body>
-        <h1>Yahtzee</h1>
+        <h1>Yahtzee: User Details</h1>
             <section id="feedback">
                 <feedback content id="feedback">{{feedback}}</feedback>
             </section>
-                {% if context=="update" %}
+                {% if context=="UPDATE" %}
                     <form action="/users/{{username}}" method="post"> 
-                {% elif context=="create" %}
+                {% elif context=="CREATE" %}
                     <form action="/users" method="post"> 
                 {% endif %}
                 <label for="username_input"><b>Username</b></label>
                 <!-- <input type="hidden" id="custId" name="user_id" value=id> -->
-                <input type="text" placeholder="Username" value={{username}} id="username_input" name="username" required>
+                <input type="text" placeholder="Username" value="{{username}}" id="username_input" name="username" required>
             
                 <label for="password_input"><b>Password</b></label>
-                <input id="password_input" value={{password}} placeholder="Enter Password" name="password" required>
+                <input id="password_input" value="{{password}}" placeholder="Enter Password" name="password" required>
 
                 <label for="password_input"><b>Email</b></label>
-                <input type="email" value={{email}} id="email_input" placeholder="Enter Email" name="email" required>
+                <input type="email" value="{{email}}" id="email_input" placeholder="Enter Email" name="email" required>
                 
-                <button id="updatecreate_user_submit" type="submit">{{context}}</button>
+                <button id="user_details_submit" type="submit">{{context}}</button>
 
             </form>
-            {% if context=="update" %}
+            {% if context=="UPDATE" %}
             <form action="/users/delete/{{username}}" method="post"> 
-                <button id="delete_user_submit" type="submit">Delete</button>
+                <button id="user_details_delete_submit" type="submit">Delete</button>
             </form>
             {% endif %}
 

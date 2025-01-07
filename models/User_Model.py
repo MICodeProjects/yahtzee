@@ -171,8 +171,8 @@ class User:
             #username check
             if bool(re.match(self.allowed_username_chars, user_info["username"]))==False: # check if username is valid
                 return {"status":"error", "data":"Invalid username entered."}
-            if self.exists(user_info["username"])==True and self.get(user_info["username"])["data"]["id"] !=user_info["id"]: # check if username exists
-                return {"status":"error", "data":f"Username already exists. id: {user_info['id']}"}
+            if self.exists(user_info["username"])["data"]==True and self.get(username=user_info["username"])["data"]["id"] !=user_info["id"]: # check if username exists
+                return {"status":"error", "data":f"Username already exists."}
             
             #email check
             if "@" not in user_info["email"] or "." not in user_info["email"] or '"' in user_info["email"]: # check if email is valid

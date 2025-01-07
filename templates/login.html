@@ -1,20 +1,24 @@
 <html>
     <head>
-        <link href="css/styles.css" rel="stylesheet" >
+        <link href="static/css/styles.css" rel="stylesheet" >
         <title>Yahtzee: Login</title>
     </head>
 
     <body>
         <h1>Yahtzee: Login</h1>
-            <form action="/games" method="get">
+        <feedback>{{feedback}}</feedback>
+            <form action="/login" method="get">
                 <label for="username_input"><b>Username</b></label>
-                <input type="text" placeholder="Username" id="username_input" name="username">
+                <input type="text" placeholder="Username" id="username_input" required name="username">
             
                 <label for="password_input"><b>Password</b></label>
-                <input type="password" id="password_input" placeholder="Enter Password" name="password">
+                <input type="password" id="password_input" placeholder="Enter Password" required name="password">
             
                 <button id="login_submit" type="submit">Login</button>
-                <button id="create_user_submit">Create</button>
+
+            </form>
+            <form action="/users" method="get">
+                <button id="create_user_submit">CREATE</button>
 
             </form>
         

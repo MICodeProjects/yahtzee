@@ -3,7 +3,7 @@ from flask import request
 from flask import render_template
 
 from models import Scorecard_Model
-yahtzeeDB_location = './yahtzeeDB.db'
+yahtzeeDB_location = './models/yahtzeeDB.db'
 Scorecard= Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users", "games")
 
 def scorecard_update(): # update scorecard

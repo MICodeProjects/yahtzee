@@ -3,7 +3,7 @@ from flask import request
 from flask import render_template
 
 from models import Game_Model
-yahtzeeDB_location = './yahtzeeDB.db'
+yahtzeeDB_location = './models/yahtzeeDB.db'
 Game=Game_Model.Game(yahtzeeDB_location, "games")
 
 def games(): # create new game
