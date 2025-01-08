@@ -20,7 +20,7 @@ def users():
         
         # making user_info packet to make user_games easier
         user_info=User.get(username)["data"]
-        return render_template('user_games.html', user_info, username=username, feedback="")
+        return render_template('user_games.html', user_info=user_info, username=username, feedback="")
     
     if request.method=="GET": # get user details page for create
 

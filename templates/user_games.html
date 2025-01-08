@@ -13,11 +13,13 @@
 
 
             <section id="games_list">
+                {% for game in games_list %}
                 <form action='/games/delete/{{game_name}}/{{username}}' method="post">
-                    <p>{{game_name}}</p>
+                    <p>{{loop.index}}. {{game_name}}</p>
                     <input class="btn btn-primary" id="delete_game_submit" type="submit" value="DELETE">
-    
+                    
                 </form> 
+                {% endfor %}
             </section>
 
    
@@ -32,9 +34,9 @@
             
             <section id="high_score_list">
                 <h2>Your High Scores</h2>
-                <!-- {% for score in high_scores %}
-                    <p>{{ number }}. {{ game_name }}: {{score}}</p>       
-                {% endfor %} -->
+                {% for game in high_score_list %}
+                    <p>{{loop.index}}. {{game["game_name"]}}: {{game["score"]}}</p>       
+                {% endfor %}
             </section>
         
 

@@ -4,6 +4,7 @@ import sqlite3
 import random
 import json
 import re
+import datetime
 
 from User_Model import User
 from Game_Model import Game
@@ -319,17 +320,66 @@ class Scorecard:
         
         return total_score
     
-    def get_chronological_games(self, username):
-        all_games=self.get_all_user_game_names(username)
+    def get_chronological_games(self, username): #WIP!!!
+        try: 
+            db_connection = sqlite3.connect(self.db_name)
+            cursor = db_connection.cursor()
+            all_games=self.get_all_user_game_names(username)
 
-        # check 4 errors
-        if all_games["status"]=="error":
-            return all_games
+            # check 4 errors or if its empty
+            if all_games["status"]=="error" or all_games["data"]==[]:
+                return all_games
+            print(all_games)
+            
+            # get created date from all scorecards, put in dictionaries in a list
+            all_scorecards=[]
+            time_test=[]
+            for game_name in all_games["data"]:
+                game_time=cursor.execute(f'''SELECT created FROM {self.game_table_name} WHERE name="{game_name}";''').fetchone()
+                #2025-01-08 15:35:12.887918
+                #time_test.append(datetime.datetime.strptime(game_time[0], '%Y-%m-%d %H:%M:%S.%f'))
+                all_scorecards.append({"game_name":game_name,"created_date":datetime.datetime.strptime(game_time[0], '%Y-%m-%d %H:%M:%S.%f')})
+            
+            all_scorecards=sorted(all_scorecards, key=lambda d: datetime.datetime.strptime(game_time[0], "%Y-%m-%d %H:%M:%S.%f"))
+            sorted_game_names=[]
+            for scorecard in all_scorecards:
+                sorted_game_names.append(scorecard["game_name"])
+            return sorted_game_names[::-1]
         
+        except sqlite3.Error as error:
+            return {"status":"error",
+                        "data":error}
+        finally:
+            db_connection.close()
+
+    def get_high_score_list(self, username):
+        try: 
+            db_connection = sqlite3.connect(self.db_name)
+            cursor = db_connection.cursor()
+            all_games=self.get_all_user_game_names(username)
+
+            # check 4 errors or if its empty
+            if all_games["status"]=="error" or all_games["data"]==[]:
+                return all_games
+            
+            all_scorecards=[]
+            
+            for game_name in all_games["data"]:
+                print(game_name)
+                game_scorecard=cursor.execute(f'''SELECT *
+                                            FROM {self.table_name} INNER JOIN {self.game_table_name} 
+                                            ON {self.table_name}.game_id={self.game_table_name}.id AND {self.game_table_name}.name="{game_name}";''').fetchone()
+                all_scorecards.append({"score":self.tally_score(self.to_dict(game_scorecard)["categories"]), "game_name":game_name})
+                
+                
+
+            return sorted(all_scorecards, key=lambda d:d["score"])[::-1]
         
-
-    # def get_high_score_list(self, username):
-
+        except sqlite3.Error as error:
+            return {"status":"error",
+                        "data":error}
+        finally:
+            db_connection.close()
 
 
         
@@ -353,18 +403,17 @@ if __name__ == '__main__':
         Users.create(user)
     Games = Game(DB_location, "games")
     Games.initialize_table()
-    games=[{"name":"game1"}, {"name":"game2"}]
+    games=[{"name":"game1"}, {"name":"game2"}, {"name":"game3"}]
     for game in games:
         Games.create(game)
 
     Scorecards = Scorecard(DB_location, "scorecards", "users", "games")
     Scorecards.initialize_table()
     Scorecards.create(Games.get(game_name="game1")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game1|justingohde")
-    Scorecards.create(Games.get(game_name="game2")["data"]["id"], Users.get(username="cookieM")["data"]["id"], "game2|cookieM")
-    Scorecards.create(Games.get(game_name="game1")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game1|justingohde")
-
-    jgohde_id=Scorecards.get(name="game1|justingohde")["data"]["id"]
-    print(Scorecards.update(id=jgohde_id, name="working...", categories=json.dumps(Scorecards.create_blank_score_info())))
-    print(Scorecards.get_all_user_game_names("justinohde"))
+    Scorecards.create(Games.get(game_name="game2")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game2|justingohde")
+    Scorecards.create(Games.get(game_name="game3")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game3|justingohde")
+    print(Games.get_all())
+    print(Scorecards.get_chronological_games("justingohde"))
+    #print(Scorecards.get_high_score_list("justingohde"))
 
     

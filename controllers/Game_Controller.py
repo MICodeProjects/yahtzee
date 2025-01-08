@@ -22,13 +22,11 @@ def game_user_page(username): # get users game page. basically just the user_gam
         
         # get games list
         games_list=Scorecard.get_all_user_game_names(username)["data"]
-        high_score_list={}
+        high_score_list=Scorecard.get_high_score_list(username)["data"]
 
 
 
-
-
-        return render_template("user_games.html", username=username, user_info=user_info, feedback="")
+        return render_template("user_games.html", username=username, user_info=user_info, high_score_list=high_score_list, games_list=games_list,feedback="")
 
 
 
