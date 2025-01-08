@@ -239,7 +239,7 @@ class Basic_Web_Tests(unittest.TestCase):
 
     
     def test_update_user_exits(self):
-        """Delete user - Username exists"""
+        """Update user - Username exists"""
         for user in self.valid_users:
             self.browser.get(self.url)
             self.enter_and_submit_user_info(user["username"], user["password"], user["email"])
@@ -265,12 +265,13 @@ class Basic_Web_Tests(unittest.TestCase):
         print("test_update_user_exits... test passed!")
     
     
-    def test_update_user_DNE(self):
-        """Delete user - Username doesn't exist"""
+    def test_GET_update_user_DNE(self):
+        """GET Update user - Username doesn't exist"""
         #bad id
         username_DNE = "nope_not_a_user"
         self.browser.get(f"{self.url}/{username_DNE}")
 
+        #assumes user_details.html is returned
         username_element = self.browser.find_element(By.ID, "username_input")
         self.assertEqual(username_element.text, "", "Username should be blank")
         password_element = self.browser.find_element(By.ID, "password_input")
@@ -283,6 +284,7 @@ class Basic_Web_Tests(unittest.TestCase):
 
         print("test_update_user_DNE... test passed!")
 
+    #TODO: test_POST_update_user_DNE(self):
     
     def test_update_user_invalid_info(self):
         """update user - Invalid info"""

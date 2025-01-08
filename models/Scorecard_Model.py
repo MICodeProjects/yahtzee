@@ -318,6 +318,19 @@ class Scorecard:
                 total_score+=value
         
         return total_score
+    
+    def get_chronological_games(self, username):
+        all_games=self.get_all_user_game_names(username)
+
+        # check 4 errors
+        if all_games["status"]=="error":
+            return all_games
+        
+        
+
+    # def get_high_score_list(self, username):
+
+
 
         
    
@@ -352,6 +365,6 @@ if __name__ == '__main__':
 
     jgohde_id=Scorecards.get(name="game1|justingohde")["data"]["id"]
     print(Scorecards.update(id=jgohde_id, name="working...", categories=json.dumps(Scorecards.create_blank_score_info())))
-    print(Scorecards.get_all())
+    print(Scorecards.get_all_user_game_names("justinohde"))
 
     

@@ -1,21 +1,22 @@
 <html>
     <head>
-        <link href="static/css/styles.css" rel="stylesheet" >
+        {% include 'partial/header.html' %}        
         <title>Yahtzee: User Details</title>
     </head>
 
     <body>
         <h1>Yahtzee: User Details</h1>
             <section id="feedback">
-                <feedback content id="feedback">{{feedback}}</feedback>
+                <feedback content>{{feedback}}</feedback>
             </section>
+            <div class="user_form">
                 {% if context=="UPDATE" %}
                     <form action="/users/{{username}}" method="post"> 
                 {% elif context=="CREATE" %}
                     <form action="/users" method="post"> 
                 {% endif %}
                 <label for="username_input"><b>Username</b></label>
-                <!-- <input type="hidden" id="custId" name="user_id" value=id> -->
+                <input type="hidden" id="custID" name="user_id" value={{id}}> 
                 <input type="text" placeholder="Username" value="{{username}}" id="username_input" name="username" required>
             
                 <label for="password_input"><b>Password</b></label>
@@ -24,14 +25,17 @@
                 <label for="password_input"><b>Email</b></label>
                 <input type="email" value="{{email}}" id="email_input" placeholder="Enter Email" name="email" required>
                 
-                <button id="user_details_submit" type="submit">{{context}}</button>
+                <input class="btn btn-primary" id="user_details_submit" type="submit" value="{{context}}">
+
 
             </form>
+            
             {% if context=="UPDATE" %}
-            <form action="/users/delete/{{username}}" method="post"> 
-                <button id="user_details_delete_submit" type="submit">Delete</button>
+            <form action="/users/delete/{{username}}" method="get"> 
+                <input class="btn btn-primary" id="user_details_delete_submit" type="submit" value="DELETE">
             </form>
             {% endif %}
+        </div>
 
         
 

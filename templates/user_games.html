@@ -1,6 +1,6 @@
 <html>
     <head>
-        <link href="static/css/styles.css" rel="stylesheet" >
+        {% include 'partial/header.html' %}        
         <title>Yahtzee: User Games</title>
     </head>
 
@@ -10,30 +10,27 @@
                 <feedback content id="feedback"></feedback>
             </section>
 
-            <section id="all_games">
-                <!-- {% for game in all_games %}
-                    <p>{{ game_number }}. {{ game_name }}</p>  
-                    <button id="delete_game" type="submit">Delete</button>
-                {% endfor %} -->
 
-                
+
+            <section id="games_list">
+                <form action='/games/delete/{{game_name}}/{{username}}' method="post">
+                    <p>{{game_name}}</p>
+                    <input class="btn btn-primary" id="delete_game_submit" type="submit" value="DELETE">
+    
+                </form> 
             </section>
 
-            <section id="previous_games">
-                <p>Games here</p>
-                <button id="delete_submit" type="submit">Delete</button>
-            </section>
-
+   
+            
             <form action="/game" method="post">
                 <label for="game_name_input"><b>Game Name</b></label>
                 <input type="text" placeholder="Game Name" id="game_name_input" name="game_name" required>
-            
-                <button id="create_game_submit" type="submit">Create</button>
-                <button id="join_game_submit" type="submit">Delete</button>
+                <input class="btn btn-primary" id="create_game_submit" type="submit" value="CREATE">
+                <input class="btn btn-primary" id="join_game_submit" type="submit" value="JOIN">
 
             </form>                
             
-            <section id="high_scores">
+            <section id="high_score_list">
                 <h2>Your High Scores</h2>
                 <!-- {% for score in high_scores %}
                     <p>{{ number }}. {{ game_name }}: {{score}}</p>       

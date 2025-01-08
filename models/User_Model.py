@@ -31,7 +31,6 @@ class User:
             db_connection = sqlite3.connect(self.db_name)
             cursor = db_connection.cursor()
             # code here
-            print(f"Exists....Username: {username}, id: {id}")
             if id!=None:
                 if self.get(id=id)["status"]=="success":
                     return {"status":"success", "data":True}
@@ -88,7 +87,6 @@ class User:
                 if exists["data"]==False:
                     break
                 elif exists["status"]=='error':
-                    print(exists["data"])
                     break
                 else:
                     user_id = random.randint(0,self.max_safe_id)
@@ -118,14 +116,11 @@ class User:
             cursor = db_connection.cursor()
             # Insert your code here
             # only using the value that is present
-            print(f"Get....Username: {username}, id: {id}")
             if id != None:
                 user=cursor.execute(f'''SELECT * FROM {self.table_name} WHERE id="{id}";''').fetchone()
-                print("id!", user)
 
             elif username !=None:
                 user=cursor.execute(f'''SELECT * FROM {self.table_name} WHERE username="{username}";''').fetchone()
-                print("username!")
             else:
                 return {"status":"error",
                     "data":"No id or username entered"}
@@ -258,10 +253,8 @@ if __name__ == '__main__':
     
 
     #print(Users.get(username = "justingohde"))
-    print(Users.exists(username="333"))
     # print(Users.update({"email":"cookie.sdfsdf@trinityschoolnyc.org",
     #                 "username":"cookffieM",
     #                 "password":"123TffiniT",
     #                 "id":Users.get(username="cookieM")["data"]["id"]}))
-    print(Users.remove("justingooo"))
     # print(Users.get_all())

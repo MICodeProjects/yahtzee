@@ -1,4 +1,3 @@
-from flask import jsonify
 from flask import request
 from flask import render_template
 
@@ -9,41 +8,45 @@ User= User_Model.User(yahtzeeDB_location, "users")
 
 def users():
     # user_info={"username":username,"email":email, "password":password, "id":User.get()}
+    print(f"{request.url}, {request.method}")
     if request.method=="POST": # create a user
         username=request.form.get("username")
         password=request.form.get("password")
         email=request.form.get("email")
-        print({"username":username,"email":email, "password":password})
         user = User.create({"username":username,"email":email, "password":password})
         print("user create=", user)
         if user["status"]=="error":
             return render_template("user_details.html", context="CREATE", feedback=str(user["data"]))
-        return render_template('user_games.html', username=username, feedback="")
+        
+        # making user_info packet to make user_games easier
+        user_info=User.get(username)["data"]
+        return render_template('user_games.html', user_info, username=username, feedback="")
     
     if request.method=="GET": # get user details page for create
-        user_info={}
-        # user_info["username"]=""
-        # user_info["password"]=""
-        # user_info["email"]=""
+
         return render_template("user_details.html", context="CREATE", feedback="",username="", password="", email="")
 
 
 def single_user(username):
     print(f"url=single_user,{request.method}")
+
     if request.method=="GET": # get user details page for update/delete
         print(f"args: {request.view_args}")
         print(f"request.query_string {request.url}")
-        user = User.get(username=username)
+
+        # checking if username exists
+        if User.exists(username)["data"]==False:
+            return render_template("user_details.html", context="CREATE", feedback="Username does not exist. Create new user with username?")
+        
+        # getting user
+        user = User.get(username)["data"]
         print(f"user: {user}")
-        if user["status"]=="error":
-            return render_template("user_details.html", context="update", feedback=str(user["data"]))
-        user_info={}
-        user_info["username"]=username
-        user_info["password"]=user["data"]["password"] # add error recongitintion
-        user_info["email"]=user["data"]["email"]
-        return render_template("user_details.html", context="UPDATE", feedback="", username=user_info["username"], password=user_info["password"], email=user_info["email"])
+
+        return render_template("user_details.html", context="UPDATE", feedback="", username=user["username"], password=user["password"], email=user["email"], id=user["id"])
     
     elif request.method=="POST": # update user
+        id=request.form.get("user_id")
+        print(f"id: {id}")
         old_username=username
         new_username=request.form.get("username")
         password=request.form.get("password")
@@ -64,10 +67,13 @@ def single_user(username):
         return render_template("user_details.html", username=new_username, context="UPDATE", feedback="", password=password,email=email)
         
 # router gets it, then puts it in controller, figures if its get or post, then sends it to 
-def user_delete():
+def user_delete(username):
     if request.method=="GET":
-        username=request.args.get("username")
-        User.remove(username)
-        return render_template("login.html", context='UPDATE')
+        if User.exists(username)["data"]==False:
+            return render_template("user_details.html", context="CREATE", feedback="Username does not exist. Create new user?")
+        
+        user=User.remove(username=username)
+        print("User deleted.", user)
+        return render_template("login.html", feedback=f"User '{username}' successfully deleted.")
     
 
