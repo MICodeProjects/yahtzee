@@ -46,7 +46,7 @@ def games(): # create new game. requires username and game_name (in little form)
         # check if game name already exists
         print(f"Checking if game exists... {Game.exists(game_name)}")
         if Game.exists(game_name)["data"]==True:
-            return render_template("user_games.html", games_list=games_list, high_scores_list=high_scores_list, feedback="Game name already exists.", username=username)
+            return render_template("user_games.html", games_list=games_list, high_scores_list=high_scores_list, feedback="Error......Game name already exists.", username=username)
         
 
 
