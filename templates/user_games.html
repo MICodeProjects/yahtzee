@@ -4,40 +4,39 @@
         <title>Yahtzee: User Games</title>
     </head>
 
-    <body>
+    <body class="notnav">
         <h1>Yahtzee: User Games</h1>
             <section id="feedback">
                 <feedback content id="feedback"></feedback>
             </section>
 
+            <p>{{feedback}}</p>
 
+            <ol id="games_list">
+                {% for game_name in games_list %}
+                <li class="list">
+                <a href="/games/{{game_name}}/{{username}}">{{game_name}}</a>
+                    <a href="/games/delete/{{game_name}}/{{username}}" class="btn btn-danger" role="button">DELETE</a>
+                </li>
 
-            <section id="games_list">
-                {% for game in games_list %}
-                <form action='/games/delete/{{game_name}}/{{username}}' method="post">
-                    <p>{{loop.index}}. {{game_name}}</p>
-                    <input class="btn btn-primary" id="delete_game_submit" type="submit" value="DELETE">
-                    
-                </form> 
                 {% endfor %}
-            </section>
+            </ol>
 
    
-            
-            <form action="/game" method="post">
-                <label for="game_name_input"><b>Game Name</b></label>
-                <input type="text" placeholder="Game Name" id="game_name_input" name="game_name" required>
-                <input class="btn btn-primary" id="create_game_submit" type="submit" value="CREATE">
-                <input class="btn btn-primary" id="join_game_submit" type="submit" value="JOIN">
+            <form class="game_form" action="/games" method="post">
+                <input type="text"  class="game_name_input" placeholder="MyGame123" id="game_name_input" name="game_name" required>
+                <input class="game_button btn btn-primary" id="create_submit" type="submit" value="CREATE">
+                <input type="hidden" id="custUsername" name="username" value="{{username}}"> 
 
-            </form>                
-            
-            <section id="high_score_list">
-                <h2>Your High Scores</h2>
-                {% for game in high_score_list %}
-                    <p>{{loop.index}}. {{game["game_name"]}}: {{game["score"]}}</p>       
+                <input class="btn game_button btn-primary" id="join_submit" formaction="/games/join" type="submit" value="JOIN">
+            </form>
+
+            <h2>Your High Scores</h2>
+            <ol id="high_scores_list">
+                {% for game in high_scores_list %}
+                    <li>{{game.game_name}}: {{game.score}}</li>       
                 {% endfor %}
-            </section>
+            </ol>
         
 
 

@@ -4,8 +4,8 @@
         {% include 'partial/header.html' %}
     </head>
 
-    <body>
-        <h1>Yahtzee: Games</h1>
+    <body class="notnav">
+        <h1>{{username}} - {{game_name}}</h1>
 
         <section id="save_and_load">
             <table>
@@ -18,11 +18,11 @@
         <section id="dice">
             <table>
               <tr>
-                <td><img id="die_0" class="die" src="/img/blank.svg" width="70" /></td>
-                <td><img id="die_1" class="die" src="/img/blank.svg" width="70" /></td>
-                <td><img id="die_2" class="die" src="/img/blank.svg" width="70" /></td>
-                <td><img id="die_3" class="die" src="/img/blank.svg" width="70" /></td>
-                <td><img id="die_4" class="die" src="/img/blank.svg" width="70" /></td>
+                <td><img id="die_0" class="die" src="/static/img/blank.svg" width="70" /></td>
+                <td><img id="die_1" class="die" src="/static/img/blank.svg" width="70" /></td>
+                <td><img id="die_2" class="die" src="/static/img/blank.svg" width="70" /></td>
+                <td><img id="die_3" class="die" src="/static/img/blank.svg" width="70" /></td>
+                <td><img id="die_4" class="die" src="/static/img/blank.svg" width="70" /></td>
               </tr>
               <tr>
                 <td colspan="3">Rolls remaining: <span id="rolls_remaining">3</span></td>
@@ -33,7 +33,7 @@
           </section>
         
           <section id="feedback">
-            <feedback content id="feedback"></feedback>
+            <feedback content id="feedback">{{feedback}}</feedback>
           </section>
         
           <section id="scorecard">
@@ -44,32 +44,32 @@
                 <th>#1</th>
               </tr>
               <tr>
-                <td>one <img src="/img/one.svg" width="20" /> =1</td>
+                <td>one <img src="/static/img/one.svg" width="20" /> =1</td>
                 <td>Count and Add Only one</td>
                 <td><input type="text" class="upper category" id="one_input" size="3"></td>
               </tr>
               <tr>
-                <td>two <img src="/img/two.svg" width="20" /> =2</td>
+                <td>two <img src="/static/img/two.svg" width="20" /> =2</td>
                 <td>Count and Add Only two</td>
                 <td><input type="text" class="upper category" id="two_input" size="3"></td>
               </tr>
               <tr>
-                <td>three <img src="/img/three.svg" width="20" /> =3</td>
+                <td>three <img src="/static/img/three.svg" width="20" /> =3</td>
                 <td>Count and Add Only three</td>
                 <td><input type="text" class="upper category" id="three_input" size="3"></td>
               </tr>
               <tr>
-                <td>four <img src="/img/four.svg" width="20" /> =4</td>
+                <td>four <img src="/static/img/four.svg" width="20" /> =4</td>
                 <td>Count and Add Only four</td>
                 <td><input type="text" class="upper category" id="four_input" size="3"></td>
               </tr>
               <tr>
-                <td>five <img src="/img/five.svg" width="20" /> =5</td>
+                <td>five <img src="/static/img/five.svg" width="20" /> =5</td>
                 <td>Count and Add Only five</td>
                 <td><input type="text" class="upper category" id="five_input" size="3"></td>
               </tr>
               <tr>
-                <td>six <img src="/img/six.svg" width="20" /> =6</td>
+                <td>six <img src="/static/img/six.svg" width="20" /> =6</td>
                 <td>Count and Add Only six</td>
                 <td><input type="text" class="upper category" id="six_input" size="3"></td>
               </tr>
@@ -146,7 +146,7 @@
             </table>
           </section>
           <footer>{% include 'partial/footer.html' %}</footer>
-          <script src="/js/UI.js"  type="module"></script>
+          <script src="/static/js/UI.js"  type="module"></script>
     </body>
 
     </html> 

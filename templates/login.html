@@ -4,12 +4,12 @@
         <title>Yahtzee: Login</title>
     </head>
 
-    <body>
+    <body class="notnav">
         <h1>Yahtzee: Login</h1>
         <section id="feedback">
             <feedback content>{{feedback}}</feedback>
         </section>      
-        <div class="user_form">
+        <div class="login_form">
         <form action="/login" method="get">
                 <label for="username_input"><b>Username</b></label>
                 <input type="text" placeholder="Username" id="username_input" required name="username">
@@ -18,13 +18,14 @@
                 <input type="password" id="password_input" placeholder="Enter Password" required name="password">
             
                 <input class="btn btn-primary" id="login_submit" type="submit" value="LOGIN">
-
+                
             </form>
-            </div>
-            <form action="/users" method="get">
+            <form action="/users" method="get" class="login-form">
                 <input class="btn btn-primary" id="create_submit" type="submit" value="CREATE">
 
             </form>
+        </div>
+
         
 
 

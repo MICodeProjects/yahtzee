@@ -1,37 +1,55 @@
 body {
-    display: flex;
+    /* display: flex; */
     font-family: Helvetica;
     line-height: 1.5;
     min-height: 100vh;
     background: #f3f3f3;
     flex-direction: column;
-    margin: 0;
-    align-items: center;
+    margin: 20px;
+    padding: 10px 20px;
+    /* align-items: center; */
 
 }
 
+
+.game_button{
+    width: 150px;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.game_name_input{
+    width:400px;
+}
+.nav{
+    display: flex;
+    align-items:start;
+}
 
 head{
     display: flex;
     align-items: start;
 }
 
-.user_form {
+
+.login_form {
     display: flex;
     border-radius: 15px;
     padding: 10px 20px;
-    width: 100px;
     flex-direction: column;
+    width: 40%;
     /* align-items: center; */
 }
-main {
-    display: flex;
-    background-color: #fff;
-    border-radius: 15px;
-    padding: 10px 20px;
-    width: 100px;
 
-    text-align: center;
+.game_form{
+    display: flex;
+    border-radius: 15px;
+    padding: 10px;
+    flex-direction:row;
+}
+
+.list{
+    padding-bottom: 10px;
 }
 
 h1 {

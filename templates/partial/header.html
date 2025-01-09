@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<!-- <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css') }}">  -->
+<link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css') }}"> 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="nav navbar navbar-expand-lg navbar-light bg-light">
     {% if context=="LOGIN" or context=="CREATE" %}
-        <a class="navbar-brand" href="#">Yahtzee</a>
+        <a class="navbar-brand" href="/login">Yahtzee</a>
     {% else %}
-        <a class="navbar-brand" href="#">Yahtzee - {{username}}</a>
+        <a class="navbar-brand" href="/login">Yahtzee - {{username}}</a>
     {% endif %}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -16,10 +16,10 @@
         {% if context!="LOGIN" and context!="CREATE" %}
 
         <li class="nav-item active">
-          <a class="nav-link" href="#">My Games <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/games/{{username}}">My Games <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#/users">Settings</a>
+          <a class="nav-link" href="/users/{{username}}">Settings</a>
         {% endif %}
 
       </ul>

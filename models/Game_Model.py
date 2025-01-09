@@ -221,7 +221,7 @@ class Game:
 if __name__ == '__main__':
     import os
     print("Current working directory:", os.getcwd())
-    DB_location=f"{os.getcwd()}/yahtzeeDB.db"
+    DB_location=f"{os.getcwd()}/models/yahtzeeDB.db"
 
     table_name = "games"
     

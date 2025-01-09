@@ -4,12 +4,12 @@
         <title>Yahtzee: User Details</title>
     </head>
 
-    <body>
+    <body class="notnav">
         <h1>Yahtzee: User Details</h1>
             <section id="feedback">
                 <feedback content>{{feedback}}</feedback>
             </section>
-            <div class="user_form">
+            <div class="login_form">
                 {% if context=="UPDATE" %}
                     <form action="/users/{{username}}" method="post"> 
                 {% elif context=="CREATE" %}
