@@ -14,6 +14,7 @@ Scorecard=Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users", "
 
 def game_user_page(username): # get users game page. basically just the user_games.html page
     username=username
+    print(f"Game user page url: {request.url}")
     if request.method=="GET":
         if User.exists(username=username)["data"]==False:
             return render_template("login.html", feedback="Username does not exist.")

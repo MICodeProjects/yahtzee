@@ -330,6 +330,7 @@ class Scorecard:
             all_games=self.get_all_user_game_names(username)
 
             # check 4 errors or if its empty
+            print(f"all_games: {all_games}, username: {username}")
             if all_games["status"]=="error" or all_games["data"]==[]:
                 return all_games
             
@@ -347,6 +348,7 @@ class Scorecard:
                 
                 
             # sort list of dictionaries by score (high to low)
+            print(f"get high score list: all_scorecards: {all_scorecards}")
             return {"status":"success", "data":sorted(all_scorecards, key=lambda d:d["score"])[::-1]}
         
         except sqlite3.Error as error:

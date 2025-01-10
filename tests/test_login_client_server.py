@@ -67,7 +67,7 @@ class Basic_Login_Tests(unittest.TestCase):
         self.DB_location=f"{os.getcwd()}/../Models/yahtzeeDB.db" #Assumes DB lives in the Models folder which is right next to the tests folder
         self.user_table_name = "users"
         self.game_table_name = "games"
-        self.scorecard_table_name = "scorecard"
+        self.scorecard_table_name = "scorecards"
         wipe_and_clean_tables(self.DB_location, self.user_table_name, self.game_table_name, self.scorecard_table_name)
         self.User_Model = User_Model.User(self.DB_location, self.user_table_name)
 

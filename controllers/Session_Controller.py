@@ -11,6 +11,7 @@ Scorecard=Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users","g
 def login():
     # curl "http://127.0.0.1:5000"   
     # if user password false: return render template with bad feedback of login.
+    print(f"login: {request.url}")
     if request.method=="GET":
         username=request.args.get("username")
         password=request.args.get("password")
@@ -31,6 +32,8 @@ def login():
         print(f"Checking if password for user {user} is correct")
         if user["password"]!=password:
             return render_template("login.html", feedback="Password is incorrect.", context="LOGIN")
+        
+        print(Scorecard.get_high_scores_list(username)["data"])
         
         return render_template('user_games.html', games_list=Scorecard.get_all_user_game_names(username)["data"], high_scores_list=Scorecard.get_high_scores_list(username)["data"],username=username, password=password, feedback="")
         

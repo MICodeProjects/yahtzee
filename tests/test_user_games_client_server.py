@@ -163,7 +163,7 @@ class Basic_User_Games_Tests(unittest.TestCase):
         self.DB_location=f"{os.getcwd()}/../Models/yahtzeeDB.db" #Assumes DB lives in the Models folder which is right next to the tests folder
         self.user_table_name = "users"
         self.game_table_name = "games"
-        self.scorecard_table_name = "scorecard"
+        self.scorecard_table_name = "scorecards"
         wipe_and_clean_tables(self.DB_location, self.user_table_name, self.game_table_name, self.scorecard_table_name)
         self.User_Model = User_Model.User(self.DB_location, self.user_table_name)
         self.Game_Model = Game_Model.Game(self.DB_location, self.game_table_name)
@@ -177,7 +177,7 @@ class Basic_User_Games_Tests(unittest.TestCase):
         self.browser.get(f"{self.url}/{user['username']}")
         expected = self.login_requirements['title']
         actual = self.browser.title
-        self.assertEqual(actual, expected, f"The page title for user_details.html should be {expected}")
+        self.assertEqual(actual, expected, f"The page title for user_games.html should be {expected}")
         
         for expected_id in self.login_requirements['elements']:
             try:
@@ -357,6 +357,8 @@ class Basic_User_Games_Tests(unittest.TestCase):
         self.enter_and_submit_user_info(self.valid_games[2]['name'], "create")
 
         feedback_element = self.browser.find_element(By.ID, "feedback")
+        self.browser.save_screenshot("validfeedback.png")
+
         self.assertTrue(len(feedback_element.text)>10, "Substantial feedback should be provided.")
 
         el_id = "games_list"
@@ -392,9 +394,11 @@ class Basic_User_Games_Tests(unittest.TestCase):
         el_id = "games_list"
         games_list = self.browser.find_element(By.ID, el_id)
         games_list_games = games_list.find_elements(By.TAG_NAME, 'li')
+        self.browser.save_screenshot("highscore.png")
         self.assertEqual(len(games_list_games), 4, f"{el_id} should have 4 game <li>")
         
         for game in games_list_games:
+
             game_link = game.find_elements(By.TAG_NAME, 'a')
             game_name = game_link[0].text
             self.assertTrue(game_name in all_game_names, f"{game_name} should be an actual game name.")
@@ -407,7 +411,6 @@ class Basic_User_Games_Tests(unittest.TestCase):
             link = f"/games/delete/{game_name}/{user['username']}"
             valid_game_link =  (delete_href==link) or (delete_href==f"http://127.0.0.1:8080{link}")
             self.assertTrue(valid_game_link, f"game link href should be /games/{game_name}/{user['username']}")
-
         print("test_login_user_with_multiple_games... test passed!")
         
     
@@ -455,6 +458,7 @@ class Basic_User_Games_Tests(unittest.TestCase):
 
         # check for deleting associated scorecards
         print("test_delete_game... test passed!")
+
     '''
     def test_join_game(self):
         self.browser.get(self.url)
@@ -466,6 +470,7 @@ class Basic_User_Games_Tests(unittest.TestCase):
         self.assertEqual(True, False, f"Test not yet implemented")
         print("test_join_game_DNE... test passed!")
     '''
+    
     def test_player_scores_1_game(self):
         user = self.valid_users[1]
         user=self.User_Model.create(user)["data"]

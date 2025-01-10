@@ -7,10 +7,10 @@
     <body class="notnav">
         <h1>Yahtzee: User Games</h1>
             <section id="feedback">
-                <feedback content id="feedback"></feedback>
+                <feedback content>{{feedback}}</feedback>
             </section>
 
-            <p>{{feedback}}</p>
+
 
             <ol id="games_list">
                 {% for game_name in games_list %}
@@ -34,7 +34,7 @@
             <h2>Your High Scores</h2>
             <ol id="high_scores_list">
                 {% for game in high_scores_list %}
-                    <li>{{game.game_name}}: {{game.score}}</li>       
+                    <li>{{game.game_name}} : {{game.score}}</li>       
                 {% endfor %}
             </ol>
         
