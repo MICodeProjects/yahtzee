@@ -76,8 +76,18 @@ def games(): # create new game. requires username and game_name (in little form)
         return render_template("user_games.html", games_list=games_list, high_scores_list=high_scores_list, username=username, feedback="Game created successfully.")
 
 
-def game_join(): # join existing game, create scorecard for game
+def join_game(): # join existing game, create scorecard for game
     if request.method=="POST":
+        # error: too many players in game
+
+        # error: already a member of game
+
+        # error: game does not exist
+
+        # success! add game to page. 
+        
+
+
         return render_template("user_games.html")
 
 def game_user_delete(username, game_name): # remove user from a game

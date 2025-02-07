@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+import requests
 import os
 import sys
 
@@ -26,7 +27,7 @@ app.add_url_rule('/users/delete/<username>', view_func=User_Controller.user_dele
 # games
 app.add_url_rule('/games', view_func=Game_Controller.games, methods = ['POST'])
 app.add_url_rule('/games/<username>', view_func=Game_Controller.game_user_page, methods = ['GET'])
-app.add_url_rule('/games/join', view_func=Game_Controller.game_join, methods = ['POST'])
+app.add_url_rule('/games/join', view_func=Game_Controller.join_game, methods = ['POST'])
 app.add_url_rule('/games/delete/<game_name>/<username>', view_func=Game_Controller.game_user_delete, methods = ['GET'])
 app.add_url_rule('/games/<game_name>/<username>', view_func=Game_Controller.game_user_game_page, methods = ['GET']) # specific game_name for a user
 

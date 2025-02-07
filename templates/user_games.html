@@ -22,14 +22,15 @@
                 {% endfor %}
             </ol>
 
-   
-            <form class="game_form" action="/games" method="post">
-                <input type="text"  class="game_name_input" placeholder="MyGame123" id="game_name_input" name="game_name" required>
-                <input class="game_button btn btn-primary" id="create_submit" type="submit" value="CREATE">
-                <input type="hidden" id="custUsername" name="username" value="{{username}}"> 
+            <div class="game_form">
+                <form class="" action="/games" method="post">
+                    <input type="text"  class="game_name_input" placeholder="MyGame123" id="game_name_input" name="game_name" required>
+                    <input class="game_button btn btn-primary" id="create_submit" type="submit" value="CREATE">
+                    <input type="hidden" id="custUsername" name="username" value="{{username}}"> 
 
-                <input class="btn game_button btn-primary" id="join_submit" formaction="/games/join" type="submit" value="JOIN">
-            </form>
+                </form>
+                    <input class="btn game_button btn-primary" id="join_submit" type="submit" value="JOIN">
+            </div>
 
             <h2>Your High Scores</h2>
             <ol id="high_scores_list">
@@ -37,10 +38,34 @@
                     <li>{{game.game_name}} : {{game.score}}</li>       
                 {% endfor %}
             </ol>
-        
+            
 
 
         <footer>{% include 'partial/footer.html' %}</footer>
     </body>
+    <SCRIPT>
+        document.getElementById("join_submit").addEventListener('click', joinGame); // this is what's getting the json stuff. username, game name, etc. puts it in json, makes it body of requests, then adds to body
+        async function joinGame(event){
+            // can only use await in a function that's async. still synchronous, but do have to say that its async. 
+            
+            const api_key = 'fbd71b6841d2b3002b8bb7c650ef9e8b';
+            const link = '/games/join';
+           
+            try {
+                const response = await fetch(linkm {
+                    method: "POST",
+                    body: JSON.stringify({username: document.getElementById, })
+                }); // await=pause, wait for function to terminatse. fetch returns a packet with 
+                if (!response.ok) { // if response is not okay; i.e. not 200, something good.
+                    throw new Error(`Response status: ${response.status}`);
+                }
 
+                const json = await response.json();
+                console.log(json);
+            } catch (error) {
+                console.error(error.message); // should return packet like {error: x, message: x}
+            }
+            console.log("JSON recieved smile")
+        }
+    </SCRIPT>
 </html>
