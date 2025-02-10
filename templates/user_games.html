@@ -14,7 +14,7 @@
 
             <ol id="games_list">
                 {% for game_name in games_list %}
-                <li class="list">
+                <li class="list games_list">
                 <a href="/games/{{game_name}}/{{username}}">{{game_name}}</a>
                     <a href="/games/delete/{{game_name}}/{{username}}" class="btn btn-danger" role="button">DELETE</a>
                 </li>
@@ -22,14 +22,14 @@
                 {% endfor %}
             </ol>
 
-            <div class="game_form">
-                <form class="" action="/games" method="post">
+            <div class="">
+                <form class="game_form" action="/games" method="post">
                     <input type="text"  class="game_name_input" placeholder="MyGame123" id="game_name_input" name="game_name" required>
                     <input class="game_button btn btn-primary" id="create_submit" type="submit" value="CREATE">
                     <input type="hidden" id="custUsername" name="username" value="{{username}}"> 
+                    <input class="btn game_button btn-primary" id="join_submit" value="JOIN">
 
                 </form>
-                    <input class="btn game_button btn-primary" id="join_submit" type="submit" value="JOIN">
             </div>
 
             <h2>Your High Scores</h2>
@@ -49,19 +49,41 @@
             // can only use await in a function that's async. still synchronous, but do have to say that its async. 
             
             const api_key = 'fbd71b6841d2b3002b8bb7c650ef9e8b';
-            const link = '/games/join';
-           
+            const link = 'http://127.0.0.1:8080/games/join';
+
+
             try {
-                const response = await fetch(linkm {
+                let username=document.getElementById("custUsername").value
+                let joined_game_name=document.getElementById("game_name_input").value
+                const response = await fetch(link, {
                     method: "POST",
-                    body: JSON.stringify({username: document.getElementById, })
+                    headers: {"Content-type": "application/json"},
+                    body: JSON.stringify({username: username, game_name:joined_game_name})
                 }); // await=pause, wait for function to terminatse. fetch returns a packet with 
+
                 if (!response.ok) { // if response is not okay; i.e. not 200, something good.
                     throw new Error(`Response status: ${response.status}`);
                 }
 
                 const json = await response.json();
                 console.log(json);
+                document.getElementById("feedback").innerHTML=json.data // changing feedback.
+
+                // dynamically changing list of user games, only if operation was a success.
+                if (json.status =="success"){
+                    let games_list=json.games_list
+                    console.log(games_list)
+                    
+                    document.getElementById("games_list").innerHTML = games_list.map(function(game_name){
+                        return `<li class="list">
+                    <a href="/games/${game_name}/${username}">${game_name}</a>
+                        <a href="/games/delete/${game_name}/${username}" class="btn btn-danger" role="button">DELETE</a>
+                    </li>`;
+                    }).join('');
+                }
+                
+
+
             } catch (error) {
                 console.error(error.message); // should return packet like {error: x, message: x}
             }

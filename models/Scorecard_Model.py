@@ -50,13 +50,6 @@ class Scorecard:
             game_name=name.split('|')[0]
             username=name.split('|')[1]
 
-            # check that game_id exists, and matches with game_name 
-                # to do
-
-            # check that user_id exists, and matches with username
-                # to do
-
-
 
             # check that user does not have a scorecard in this game already
             if username in self.get_all_game_usernames(game_name)["data"]:
