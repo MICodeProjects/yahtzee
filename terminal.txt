@@ -1,0 +1,4 @@
+to activate venv
+(in terminal)
+cd .venv
+source bin/activate
