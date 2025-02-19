@@ -140,7 +140,7 @@ class Game:
         finally:
             db_connection.close()
 
-    def update(self, game_info): 
+    def update(self, game_info, username): 
         try: 
             db_connection = sqlite3.connect(self.db_name)
             cursor = db_connection.cursor()

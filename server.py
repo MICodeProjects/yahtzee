@@ -11,7 +11,7 @@ fpath = os.path.join(os.path.dirname(__file__), 'models')
 sys.path.append(fpath)
 from controllers import Session_Controller, Game_Controller, Scorecard_Controller, User_Controller
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+app = Flask(__name__, static_url_path='/public', static_folder='public')
 
 #The Router section of our application conects routes to Contoller methods
 app.add_url_rule('/', view_func=Session_Controller.index, methods = ['GET'])
