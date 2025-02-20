@@ -7,4 +7,4 @@ yahtzeeDB_location = './models/yahtzeeDB.db'
 Scorecard= Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users", "games")
 
 def scorecard_update(): # update scorecard
-    return render_template("game.html")
+    return render_template("index.ejs")
