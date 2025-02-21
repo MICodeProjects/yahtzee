@@ -1,6 +1,6 @@
 console.log("UI.js connected")
-import Dice from './Dice.js';
-import Gamecard from './Gamecard.js';
+import Dice from '/js/Dice.js';
+import Gamecard from '/js/Gamecard.js';
 
 //-------Dice Setup--------//
 display_feedback("New game initiated successfully", "good")

@@ -39,11 +39,12 @@ io.on('connection', function(socket){
 });
 
 app.get('/games/:game_name/:username', function(request, response) {
+  console.log("kkkkkkk")
   let username = request.params.username;
   let game_name = request.params.game_name;
 
   response.status(200);
-  response.setHeader('Content-Type', 'text/html');
+  response.setHeader('Content-Type', 'text/html')
   response.render("index", {
     username: username,
     game_name: game_name
