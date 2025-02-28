@@ -12,6 +12,7 @@ app.set('views', __dirname + '/views'); //specify location of templates
 app.set('view engine', 'ejs'); //specify templating library
 
 io.on('connection', function(socket){  
+  console.log("io is on")
   io.emit('connection', {
     num_total_connections: io.engine.clientsCount
   }); 
@@ -37,11 +38,12 @@ io.on('connection', function(socket){
 
  
 });
-
-app.get('/games/:game_name/:username', function(request, response) {
-  console.log("kkkkkkk")
+// this process circumvents the need for controllers. we write the function that the controller would run right here.
+app.get('/games/:game_name/:username', async function(request, response) { // front end pings this to get the page.  need to put fetch here  bc you need to send . change links to the node server on user_games
   let username = request.params.username;
   let game_name = request.params.game_name;
+  console.log("username is", username)
+  console.log(`game name is ${game_name}`)
 
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
@@ -51,7 +53,7 @@ app.get('/games/:game_name/:username', function(request, response) {
   });
 });
 
-//start the server
+//start the server. node server is the only one that renders the actual yahtzee game.
 const port = process.env.PORT || 3000;
 app.set('port', port); //let heroku pick the port if needed
 

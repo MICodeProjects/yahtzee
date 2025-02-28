@@ -9,7 +9,7 @@ User= User_Model.User(yahtzeeDB_location, "users")
 Scorecard=Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users","games")
 
 def login():
-    # curl "http://127.0.0.1:5000"   
+    # curl "http://127.0.0.1:8080"   
     # if user password false: return render template with bad feedback of login.
     print(f"login: {request.url}")
     if request.method=="GET":

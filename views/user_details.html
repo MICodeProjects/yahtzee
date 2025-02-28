@@ -11,9 +11,9 @@
             </section>
             <div class="login_form">
                 {% if context=="UPDATE" %}
-                    <form action="/users/{{username}}" method="post"> 
+                    <form action="http://127.0.0.1:8080/users/{{username}}" method="post"> 
                 {% elif context=="CREATE" %}
-                    <form action="/users" method="post"> 
+                    <form action="http://127.0.0.1:8080/users" method="post"> 
                 {% endif %}
                 <label for="username_input"><b>Username</b></label>
                 <input type="hidden" id="custID" name="user_id" value={{id}}> 
@@ -31,7 +31,7 @@
             </form>
             
             {% if context=="UPDATE" %}
-            <form action="/users/delete/{{username}}" method="get"> 
+            <form action="http://127.0.0.1:8080/users/delete/{{username}}" method="get"> 
                 <input class="btn btn-primary" id="user_details_delete_submit" type="submit" value="DELETE">
             </form>
             {% endif %}

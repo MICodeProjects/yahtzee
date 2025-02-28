@@ -15,15 +15,15 @@
             <ol id="games_list">
                 {% for game_name in games_list %}
                 <li class="list games_list">
-                <a href="/games/{{game_name}}/{{username}}">{{game_name}}</a>
-                    <a href="/games/delete/{{game_name}}/{{username}}" class="btn btn-danger" role="button">DELETE</a>
+                <a href="http://localhost:3000/games/:{{game_name}}/:{{username}}">{{game_name}}</a>
+                    <a href="http://127.0.0.1:8080/games/delete/{{game_name}}/{{username}}" class="btn btn-danger" role="button">DELETE</a>
                 </li>
 
                 {% endfor %}
             </ol>
 
             <div class="">
-                <form class="game_form" action="/games" method="post">
+                <form class="game_form" action="http://127.0.0.1:8080/games" method="post">
                     <input type="text"  class="game_name_input" placeholder="MyGame123" id="game_name_input" name="game_name" required>
                     <input class="game_button btn btn-primary" id="create_submit" type="submit" value="CREATE">
                     <input type="hidden" id="custUsername" name="username" value="{{username}}"> 
@@ -76,8 +76,8 @@
                     
                     document.getElementById("games_list").innerHTML = games_list.map(function(game_name){
                         return `<li class="list">
-                    <a href="/games/${game_name}/${username}">${game_name}</a>
-                        <a href="/games/delete/${game_name}/${username}" class="btn btn-danger" role="button">DELETE</a>
+                    <a href="http://127.0.0.1:8080/games/${game_name}/${username}">${game_name}</a>
+                        <a href="http://127.0.0.1:8080/games/delete/${game_name}/${username}" class="btn btn-danger" role="button">DELETE</a>
                     </li>`;
                     }).join('');
                 }

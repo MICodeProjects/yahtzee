@@ -8,7 +8,7 @@ let roll_button = document.getElementById('roll_button');
 roll_button.addEventListener('click', roll_dice_handler);
 
 
-let username = document.getElementById("uname").value
+let username = document.getElementById("username_info").innerHTML
 console.log(`Username is ${username}`)
 
 let save_game = document.getElementById("save_game");
