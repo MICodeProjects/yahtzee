@@ -139,7 +139,7 @@ def game_user_delete(username, game_name): # remove user from a game
 def game_user_game_page(username, game_name): # get specific game for a user
     if request.method=="GET":
 
-        return render_template("index.ejs", username=username, game_name=game_name)
+        return render_template("/yahtzee_js/views/index.ejs", username=username, game_name=game_name)
 
 
 

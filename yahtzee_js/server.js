@@ -38,6 +38,8 @@ io.on('connection', function(socket){
 
  
 });
+// app.get('/games/:game_name/:data'), async function(request)
+
 // this process circumvents the need for controllers. we write the function that the controller would run right here.
 app.get('/games/:game_name/:username', async function(request, response) { // front end pings this to get the page.  need to put fetch here  bc you need to send . change links to the node server on user_games
   let username = request.params.username;

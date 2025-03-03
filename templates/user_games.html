@@ -15,7 +15,7 @@
             <ol id="games_list">
                 {% for game_name in games_list %}
                 <li class="list games_list">
-                <a href="http://localhost:3000/games/:{{game_name}}/:{{username}}">{{game_name}}</a>
+                <a href="http://localhost:3000/games/{{game_name}}/{{username}}">{{game_name}}</a>
                     <a href="http://127.0.0.1:8080/games/delete/{{game_name}}/{{username}}" class="btn btn-danger" role="button">DELETE</a>
                 </li>
 
@@ -76,7 +76,7 @@
                     
                     document.getElementById("games_list").innerHTML = games_list.map(function(game_name){
                         return `<li class="list">
-                    <a href="http://127.0.0.1:8080/games/${game_name}/${username}">${game_name}</a>
+                    <a href="http://localhost:3000/games/${game_name}/${username}">${game_name}</a>
                         <a href="http://127.0.0.1:8080/games/delete/${game_name}/${username}" class="btn btn-danger" role="button">DELETE</a>
                     </li>`;
                     }).join('');
