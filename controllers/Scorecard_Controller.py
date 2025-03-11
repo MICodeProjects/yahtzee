@@ -6,5 +6,14 @@ from models import Scorecard_Model
 yahtzeeDB_location = './models/yahtzeeDB.db'
 Scorecard= Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users", "games")
 
-def scorecard_update(): # update scorecard
-    return render_template("index.ejs")
+def scorecards_update(game_name): # update scorecard
+    game_name=game_name
+    Scorecard.update(name=game_name)
+
+def get_all_game_scorecards(game_name): # given a game name, return all the scorecards in that game
+    game_name=game_name
+    return Scorecard.get_all_game_scorecards(game_name)["data"]
+
+def get_all_game_usernames(game_name): # given a game, what are the usernames associated with it?
+    game_name=game_name
+    return Scorecard.get_all_game_usernames(game_name)["data"]
