@@ -37,7 +37,6 @@
           </section>
           <section id="players">
             <ol>
-              <% for (player in playe%>
             </ol>
   
           </section>
@@ -176,7 +175,8 @@
     let socket = io.connect('/');//the default namespace
     socket.emit('game_connection', {username:'<%=username%>', game_name:'<%=game_name%>'});
 
-    socket.on('game_connection', function(data) {
+
+    socket.on('game_connection', function(data) { // when another user joins the game.
         console.log(data.username+" has joined the game!")
 
         //keep track of the current number of connected game players
@@ -185,17 +185,19 @@
         let chat_display_element = document.getElementById('chat_display');
         let text = " has joined the game!\n";
         
-        if(data.username)
+        if(data.username) // if there's a username: add this message to the chat.
            text = data.username+text;
 
         chat_display_element.value =  chat_display_element.value+text;
+
+        // add another scorecard for player using their scorecard. make sure its updated using the scorecard updated version they send
+
+
     });
 
     socket.on('connection', function(data) {
         console.log("New player has connected to Yahtzee!")
         let total_players_element = document.getElementById('total_players');
-        let player_names = document.getElementById('players')
-        player_names.innerText = 
         total_players_element.innerText = data.num_total_connections;
     });
 
@@ -208,6 +210,33 @@
 
         chat_display_element.value+=text;
     });
+
+
+    socket.on("valid_score", function(data){
+      let username = data.username
+      let scorecard=data.scorecard
+      console.log(`${username} has a new valid scorecard: ${scorecard}`)
+  //     let link = `http://127.0.0.1:8080/scorecards/scorecards_update/${game_name}`
+  //     try {
+  //     const response = await fetch(link);
+  //     if (!response.ok) {
+  //         throw new Error(`Response status: ${response.status}`);
+  //     }
+
+  //      scorecards = await response.json();
+  //     console.log(`Scorecards : ${scorecards}`);
+  //     } catch (error) {
+  //     console.error(error.message);
+  // }
+
+    })
+
+    // when player reserves/unreserves die, add event listener that socket emits "reserves die"
+    // socket.on this will change the other player's screens
+
+    // when player roles dice, add event listener socket.emit("die_rolled")
+    // socket.on("die_rolled") update die.
+
 
     document.getElementById("chat_button").addEventListener('click', function(){
       let message_data = document.getElementById("chat_message").value;

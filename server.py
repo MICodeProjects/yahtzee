@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import request
-import requests
 import os
 import sys
 
@@ -32,7 +31,7 @@ app.add_url_rule('/games/delete/<game_name>/<username>', view_func=Game_Controll
 app.add_url_rule('/games/<game_name>/<username>', view_func=Game_Controller.game_user_game_page, methods = ['GET']) # specific game_name for a user
 
 # scorecards
-app.add_url_rule('/scorecards/update/<scorecard_id>', view_func=Scorecard_Controller.scorecard_update, methods = ['POST']) # update scorecard
+app.add_url_rule('/scorecards/update/<scorecard_id>', view_func=Scorecard_Controller.scorecards_update, methods = ['POST']) # update scorecard
 app.add_url_rule('/scorecards/get_all_game_scorecards/<game_name>', view_func=Scorecard_Controller.get_all_game_scorecards, methods = ['GET']) # given a game_name, what are all the scorecards associated w/ it?
 app.add_url_rule('/scorecards/get_all_game_usernames/<game_name>', view_func=Scorecard_Controller.get_all_game_usernames, methods = ['GET']) # given a game_name, what are all the scorecards associated w/ it?
 

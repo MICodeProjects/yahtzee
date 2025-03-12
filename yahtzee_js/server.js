@@ -39,35 +39,34 @@ io.on('connection', function(socket){
 
  
 });
-app.get('/games/:game_name/data'), async function(request, response){
-  let game_name = request.params.game_name;
-  let url = `/scorecards/get_all_game_usernames/${game_name}`
-    try {
-      let response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      let json = await response.json();
-      console.log(json);
-      response.render
-    } catch (error) {
-      console.error(error.message);
-    }
-}
-
 
 // this process circumvents the need for controllers. we write the function that the controller would run right here.
 app.get('/games/:game_name/:username', async function(request, response) { // front end pings this to get the page.  need to put fetch here  bc you need to send . change links to the node server on user_games
   let username = request.params.username;
   let game_name = request.params.game_name;
+  let scorecards = '';
   console.log("username is", username)
   console.log(`game name is ${game_name}`)
 
+  let link = `http://127.0.0.1:8080/scorecards/get_all_game_usernames/${game_name}`
+    try {
+      const response = await fetch(link);
+      if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+      }
+
+       scorecards = await response.json();
+      console.log(`Scorecards : ${scorecards}`);
+  } catch (error) {
+      console.error(error.message);
+  }
+  console.log("hello")
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("index", {
     username: username,
-    game_name: game_name
+    game_name: game_name,
+    scorecards: scorecards
   });
 });
 
