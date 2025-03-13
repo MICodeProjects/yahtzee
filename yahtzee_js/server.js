@@ -45,28 +45,44 @@ app.get('/games/:game_name/:username', async function(request, response) { // fr
   let username = request.params.username;
   let game_name = request.params.game_name;
   let scorecards = '';
+  let players='';
   console.log("username is", username)
   console.log(`game name is ${game_name}`)
 
-  let link = `http://127.0.0.1:8080/scorecards/get_all_game_usernames/${game_name}`
+
+  let players_link = `http://127.0.0.1:8080/scorecards/get_all_game_usernames/${game_name}`
     try {
-      const response = await fetch(link);
+      const response = await fetch(players_link);
       if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
       }
 
-       scorecards = await response.json();
-      console.log(`Scorecards : ${scorecards}`);
+       players = await response.json();
+
+      console.log(`Players : ${players}`);
   } catch (error) {
       console.error(error.message);
   }
+
+  // let scorecards_link = `http://127.0.0.1:8080/scorecards/get_all_game_scorecards/${game_name}`
+  //   try {
+  //     const response = await fetch(scorecards_link);
+  //     if (!response.ok) {
+  //         throw new Error(`Response status: ${response.status}`);
+  //     }
+
+  //      scorecards = await response.json();
+  //     console.log(`Scorecards : ${scorecards}`);
+  // } catch (error) {
+  //     console.error(error.message);
+  // }
   console.log("hello")
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("index", {
     username: username,
     game_name: game_name,
-    scorecards: scorecards
+    players:players
   });
 });
 

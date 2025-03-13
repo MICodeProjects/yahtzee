@@ -146,7 +146,6 @@ class Game:
             cursor = db_connection.cursor()
             if self.get(id=game_info["id"])["data"]=="Game does not exist.":
                 return {"status":"error","data":"Game does not exist."}
-            print(f"exists?: {self.get(id=game_info['id'])}")
 
             #name check
             if bool(re.match(self.allowed_name_chars, game_info["name"]))==False: # check if name is valid
@@ -195,7 +194,6 @@ class Game:
             #time=f"{time_unfiltered.strftime('%b')} {time_unfiltered.strftime('%d')}, {time_unfiltered.strftime('%G')} {time_unfiltered.strftime('%X')}"
             #'2024-11-15 13:45:52.740726'
             # created: 'August 19, 2024 23:15:30',
-            print(game["data"]["created"], game["data"]["finished"])
             return {"status":"success", "data":str(game["data"]["created"])!=str(game["data"]["finished"])}
                 
         except sqlite3.Error as error:

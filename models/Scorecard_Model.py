@@ -60,7 +60,6 @@ class Scorecard:
                 return {"status":"error", "data":"Scorecard name already exists"}
             # check that game does not have 4 players already
             players_in_game=len(self.get_all_game_scorecards(game_name)["data"])
-            print(f"pkaters")
             if players_in_game==4:
                 return {"status":"error", "data":"Already 4 players in the game."}
             
@@ -317,17 +316,14 @@ class Scorecard:
     
     def get_high_scores_list(self, username):
         try: 
-            print("Get high score list initated. Activating...")
             db_connection = sqlite3.connect(self.db_name)
             cursor = db_connection.cursor()
             all_games=self.get_all_user_game_names(username)
 
             # check 4 errors or if its empty
-            print(f"all_games: {all_games}, username: {username}")
             if all_games["status"]=="error" or all_games["data"]==[]:
                 return all_games
             
-            print(f"All games under username={all_games}")
             
             all_scorecards=[]
             
@@ -336,12 +332,10 @@ class Scorecard:
                 game_scorecard=cursor.execute(f'''SELECT *
                                             FROM {self.table_name} INNER JOIN {self.game_table_name} 
                                             ON {self.table_name}.game_id={self.game_table_name}.id AND {self.game_table_name}.name="{game_name}";''').fetchone()
-                print(f"scorecard of game name {game_name}: {self.to_dict(game_scorecard)}")
                 all_scorecards.append({"score":self.tally_score(self.to_dict(game_scorecard)["categories"]), "game_name":game_name})
                 
                 
             # sort list of dictionaries by score (high to low)
-            print(f"get high score list: all_scorecards: {all_scorecards}")
             return {"status":"success", "data":sorted(all_scorecards, key=lambda d:d["score"])[::-1]}
         
         except sqlite3.Error as error:
@@ -381,8 +375,6 @@ if __name__ == '__main__':
     Scorecards.create(Games.get(game_name="game1")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game1|justingohde")
     Scorecards.create(Games.get(game_name="game2")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game2|justingohde")
     Scorecards.create(Games.get(game_name="game3")["data"]["id"], Users.get(username="justingohde")["data"]["id"], "game3|justingohde")
-    print(Games.get_all())
     # print(Scorecards.get_chronological_games("justingohde"))
-    print(Scorecards.get_high_scores_list("justingohde"))
 
     
