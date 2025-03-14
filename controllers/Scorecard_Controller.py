@@ -10,13 +10,12 @@ def scorecards_update(game_name): # update scorecard
     game_name=game_name
     Scorecard.update(name=game_name)
 
-def get_all_game_scorecards(game_name): # given a game name, return all the scorecards in that game
-    game_name=game_name    
-    # print(Scorecard.get_all_game_scorecards(game_name)["data"])
-
-    return Scorecard.get_all_game_scorecards(game_name)["data"]
-
-def get_all_game_usernames(game_name): # given a game, what are the usernames associated with it?
+def game_connection_data(game_name): # given a game name, return all the scorecards in that game
     game_name=game_name
-    # print(Scorecard.get_all_game_usernames(game_name)["data"])
-    return Scorecard.get_all_game_usernames(game_name)["data"]
+    players = Scorecard.get_all_game_usernames(game_name)
+    scorecards = Scorecard.get_all_game_scorecards(game_name)
+    print(players, scorecards)
+
+
+    return {"scorecards":scorecards["data"], "players":players["data"]}
+

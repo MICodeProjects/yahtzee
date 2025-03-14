@@ -17,16 +17,43 @@ io.on('connection', function(socket){
     num_total_connections: io.engine.clientsCount
   }); 
 
-  socket.on('game_connection', function(data) {  
-    socket.join(data.game_name);
-    console.log('Socket game connection event:', data.username, io.sockets.adapter.rooms.get(data.game_name).size);
+  socket.on("game_connection", async function(data){
+    socket.join(data.game_name)
+    const request_header = [data.username, data.game_name]
+    const link = `http://127.0.0.1:8080/scorecards/game_connection_data/${data.game_name}`
+    // fetch data
+      try {
+        const response = await fetch(link); //const response = await fetch(players_link, {method:"POST", headers:{"usergamename":requestheader}});
+        
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
 
-    io.to(data.game_name).emit('game_connection', {
-        username:data.username,
-        players:io.sockets.adapter.rooms.get(data.username),
-        num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
-    });
-  }); 
+        // getting data from fetch and the status
+        const json = await response.json()
+
+
+          const players = json.players
+          const scorecards = json.scorecards
+          
+          // emit game_connection data to all clients
+          io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
+            username: data.username,
+            game_name: data.game_name,
+            players:players,
+            scorecards:scorecards,
+            num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
+
+          });
+        
+  
+      } catch (error) {
+          console.error(error.message);
+      }
+
+      
+  
+  });
 
   socket.on('chat', function(data) {
     console.log('Socket chat event:', data);
@@ -40,49 +67,19 @@ io.on('connection', function(socket){
  
 });
 
+
+
+
 // this process circumvents the need for controllers. we write the function that the controller would run right here.
 app.get('/games/:game_name/:username', async function(request, response) { // front end pings this to get the page.  need to put fetch here  bc you need to send . change links to the node server on user_games
   let username = request.params.username;
   let game_name = request.params.game_name;
-  let scorecards = '';
-  let players='';
-  console.log("username is", username)
-  console.log(`game name is ${game_name}`)
 
-
-  let players_link = `http://127.0.0.1:8080/scorecards/get_all_game_usernames/${game_name}`
-    try {
-      const response = await fetch(players_link);
-      if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-      }
-
-       players = await response.json();
-
-      console.log(`Players : ${players}`);
-  } catch (error) {
-      console.error(error.message);
-  }
-
-  // let scorecards_link = `http://127.0.0.1:8080/scorecards/get_all_game_scorecards/${game_name}`
-  //   try {
-  //     const response = await fetch(scorecards_link);
-  //     if (!response.ok) {
-  //         throw new Error(`Response status: ${response.status}`);
-  //     }
-
-  //      scorecards = await response.json();
-  //     console.log(`Scorecards : ${scorecards}`);
-  // } catch (error) {
-  //     console.error(error.message);
-  // }
-  console.log("hello")
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("index", {
     username: username,
     game_name: game_name,
-    players:players
   });
 });
 
