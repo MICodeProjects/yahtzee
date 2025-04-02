@@ -44,12 +44,12 @@ io.on('connection', function(socket){
           io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
             username: data.username,
             game_name: data.game_name,
-            players:jsonify(players),
-            scorecards:jsonify(scorecards),
+            players:players,
+            scorecards:scorecards,
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });
-        ISSUE: players and game_name are not registered JSON. they do not register on the other end. so we cannot access the scorecards.
+       // ISSUE: players and game_name are not registered JSON. they do not register on the other end. so we cannot access the scorecards.
   
       } catch (error) {
           console.error(error.message);
