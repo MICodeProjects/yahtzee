@@ -44,8 +44,8 @@ io.on('connection', function(socket){
           io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
             username: data.username,
             game_name: data.game_name,
-            players:players,
-            scorecards:scorecards,
+            players:jsonify(players),
+            scorecards:jsonify(scorecards),
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });

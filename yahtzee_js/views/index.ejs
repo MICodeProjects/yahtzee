@@ -185,7 +185,7 @@
         let chat_display_element = document.getElementById('chat_display');
         let text = " has joined the game!\n";
 
-        let players = data.players // what client emits with game connection.
+        let players = JSON.parse(data.players) // what client emits with game connection.
         let scorecards = JSON.parse(data.scorecards)
         console.log(`players: ${players}, \n scorecards: ${scorecards}`)
 
