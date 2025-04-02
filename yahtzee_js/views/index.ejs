@@ -173,12 +173,11 @@
 
     let socket = io.connect('/');//the default namespace
 
-     
-
-    socket.emit('game_connection', {username:'<%=username%>', game_name:"<%=game_name%>"}); // THIS goes to the server, not other clients.  HAS to go to server then clients, not from client to client.
+    console.log('username check<%=username%>')
+    socket.emit('game_connection', {username:'<%=username%>', game_name:'<%=game_name%>'}); // THIS goes to the server, not other clients.  HAS to go to server then clients, not from client to client.
     
     socket.on('game_connection', function(data) { // when another user joins the game.
-        console.log(data.username+" has joined the game!")
+        console.log(data.username+" has joined the game!") // works!
 
         //keep track of the current number of connected game players
         let game_players_element = document.getElementById('game_players');
@@ -187,8 +186,8 @@
         let text = " has joined the game!\n";
 
         let players = data.players // what client emits with game connection.
-        let scorecards = data.scorecards
-        console.log(`players: ${data.players}, \n scorecards: ${scorecards}`)
+        let scorecards = JSON.parse(data.scorecards)
+        console.log(`players: ${players}, \n scorecards: ${scorecards}`)
 
         
         

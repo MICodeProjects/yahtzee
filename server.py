@@ -32,7 +32,7 @@ app.add_url_rule('/games/<game_name>/<username>', view_func=Game_Controller.game
 
 # scorecards
 app.add_url_rule('/scorecards/update/<scorecard_id>', view_func=Scorecard_Controller.scorecards_update, methods = ['POST']) # update scorecard
-app.add_url_rule('/scorecards/get_all_game_scorecards/<game_name>', view_func=Scorecard_Controller.game_connection_data, methods = ['GET']) # given a game_name, what are all the scorecards associated w/ it?
+app.add_url_rule('/scorecards/game_connection_data/<game_name>', view_func=Scorecard_Controller.game_connection_data, methods = ['GET']) # given a game_name, what are all the scorecards associated w/ it?
 
 
 

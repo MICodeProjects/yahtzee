@@ -19,11 +19,13 @@ io.on('connection', function(socket){
 
   socket.on("game_connection", async function(data){
     socket.join(data.game_name)
-    const request_header = [data.username, data.game_name]
+    const request_header = [data.game_name]
     const link = `http://127.0.0.1:8080/scorecards/game_connection_data/${data.game_name}`
     // fetch data
       try {
-        const response = await fetch(link); //const response = await fetch(players_link, {method:"POST", headers:{"usergamename":requestheader}});
+        const response = await fetch(link);
+        // const response = await fetch(link, {method:"POST", headers:{"usergamename":request_header}});
+        console.log(response)
         
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
@@ -31,10 +33,12 @@ io.on('connection', function(socket){
 
         // getting data from fetch and the status
         const json = await response.json()
+        console.log(json)
 
 
           const players = json.players
           const scorecards = json.scorecards
+          console.log(`players in server.js: ${players},\n scorecards in server.js: ${scorecards}`)
           
           // emit game_connection data to all clients
           io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
@@ -45,12 +49,13 @@ io.on('connection', function(socket){
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });
-        
+        ISSUE: players and game_name are not registered JSON. they do not register on the other end. so we cannot access the scorecards.
   
       } catch (error) {
           console.error(error.message);
       }
-
+    
+    console.log("socket.on game connection is running")
       
   
   });
