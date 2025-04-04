@@ -43,7 +43,7 @@
           <section id="feedback">
             <feedback content id="feedback"></feedback>
           </section>
-          <input type="hidden" id="uname" name="username"> 
+          <input type="hidden" id="uname" name="username" value="<%=username%>"> 
 
           <section id="scorecard">
             <table>
@@ -178,16 +178,17 @@
     
     socket.on('game_connection', function(data) { // when another user joins the game.
         console.log(data.username+" has joined the game!") // works!
-
+        console.log("socket.on('game_connection') connected")
         //keep track of the current number of connected game players
         let game_players_element = document.getElementById('game_players');
         game_players_element.innerText = data.num_game_connections;
         let chat_display_element = document.getElementById('chat_display');
         let text = " has joined the game!\n";
 
-        let players = JSON.parse(data.players) // what client emits with game connection.
-        let scorecards = JSON.parse(data.scorecards)
-        console.log(`players: ${players}, \n scorecards: ${data.scorecards}`)
+        let players = data.players // what client emits with game connection.
+        console.log(`game_connection players went through! it is ${players}`)
+        // let scorecards = data.scorecards
+        // console.log(`players: ${players}, \n scorecards: ${data.scorecards}`)
 
         
         

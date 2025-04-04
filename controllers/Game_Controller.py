@@ -62,7 +62,6 @@ def games(): # create new game. requires username and game_name (in little form)
         # check if scorecard errors
         if scorecard["status"]=="error":
             return render_template("user_games.html", games_list=games_list, high_scores_list=high_scores_list, username=username, feedback=str(scorecard["data"]))
-        print(f"Username is {username}")
 
         # get user_info
         user_info=User.get(username=username)["data"]

@@ -14,8 +14,8 @@ def game_connection_data(game_name): # given a game name, return all the scoreca
     game_name=game_name
     players = Scorecard.get_all_game_usernames(game_name)
     scorecards = Scorecard.get_all_game_scorecards(game_name)
-    print(players["data"], scorecards["data"])
+    print(jsonify(players["data"]), jsonify(scorecards["data"]))
 
 
-    return {"scorecards":jsonify(scorecards["data"]), "players":jsonify(players["data"])}
+    return players
 

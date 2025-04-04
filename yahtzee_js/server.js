@@ -33,19 +33,16 @@ io.on('connection', function(socket){
 
         // getting data from fetch and the status
         const json = await response.json()
-        console.log(json)
+        console.log(`Json should be ${json}`)
 
 
-          const players = json.players
-          const scorecards = json.scorecards
-          console.log(`players in server.js: ${players},\n scorecards in server.js: ${scorecards}`)
+          
           
           // emit game_connection data to all clients
           io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
             username: data.username,
             game_name: data.game_name,
             players:players,
-            scorecards:scorecards,
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });

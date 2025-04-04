@@ -12,7 +12,7 @@ roll_button.addEventListener('click', roll_dice_handler);
 
 
 let username = document.getElementById("uname").value
-console.log(`Username is ${username}`)
+console.log(`UI.js: Username is ${username}`)
 
 let save_game = document.getElementById("save_game");
 save_game.addEventListener('click', save_game_handler)
