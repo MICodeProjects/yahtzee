@@ -186,7 +186,7 @@
         let text = " has joined the game!\n";
 
         // let players = data.players // what client emits with game connection.
-        let scorecards = data.scorecards
+        let scorecards = JSON.parse(data.scorecards)
         console.log(`\n scorecards: ${data.scorecards}`)
 
         
