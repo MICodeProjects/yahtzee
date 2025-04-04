@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 let express = require('express');
 let app = express();
 
@@ -42,7 +43,7 @@ io.on('connection', function(socket){
           io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
             username: data.username,
             game_name: data.game_name,
-            players:players,
+            scorecards:json,
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });
@@ -78,7 +79,7 @@ app.get('/games/:game_name/:username', async function(request, response) { // fr
   let game_name = request.params.game_name;
 
   response.status(200);
-  response.setHeader('Content-Type', 'text/html')
+  response.setHeader('Content-Type', 'application/json')
   response.render("index", {
     username: username,
     game_name: game_name,
