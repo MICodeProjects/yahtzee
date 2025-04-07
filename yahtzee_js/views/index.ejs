@@ -35,16 +35,15 @@
             </table>
             <br>
           </section>
-          <section id="players">
-            <ol>
-            </ol>
-  
-          </section>
+
           <section id="feedback">
             <feedback content id="feedback"></feedback>
           </section>
+            <p id="turn_order">It is your turn!</p>
+
           <input type="hidden" id="uname" name="username" value="<%=username%>"> 
           <input type="hidden" id="gname" name="game_name" value="<%=game_name%>">
+          <input type="hidden" id="current_turn" name="current_turn" value="<%=turn_order.current_turn%>">
 
           <section id="scorecard">
             <table>
@@ -52,7 +51,7 @@
                 <th>UPPER SECTION</th>
                 <th>HOW TO SCORE</th>
                 <% players.forEach(function(player) { %>
-                <th><%=player%></th>
+                <th class="players"><%=player%></th>
                 <% }) %>
               </tr>
               <tr>
@@ -229,9 +228,7 @@
 
         let players = JSON.parse(data.players) // what client emits with game connection.
         let scorecards = JSON.parse(data.scorecards)
-        console.log(`In socket.on. players: ${players} \n scorecards: ${data.scorecards} `)
-        console.log("Players:", JSON.stringify(players));
-
+        
 
         // add join game message to chat
         let chat_display_element = document.getElementById('chat_display');
@@ -279,6 +276,40 @@
           }
         })
       })
+
+      // change turn order after each valid score
+      // let players = document.getElementsByClassName("players").map(function(player){return player.innerText})
+      // let current_turn = parseInt(document.getElementById("current_turn").value)
+      // let num_players = parseInt(document.getElementById("game_players").innerHTML)
+      let turn_order = JSON.parse()
+      console.log(`erm....did it work? ${turn_order}`)
+
+      // should you go to next person or reset loop?
+      if (current_turn<num_players){
+        document.getElementById("current_turn")=current_turn+1
+      }else{
+        document.getElementById("current_turn")=1
+      }
+
+      // changing turn flavor text
+
+      // shift which scores are disabled. the person whos playing should only have their 
+      // filled scores disabled, but the other players have all the categories disabled.
+    //   players.forEach(function(player){
+    //       document.getElementsByClassName(`category ${player}`).forEach(function(category){
+    //         if (player!=turn_order["players"][current_turn]){
+    //           category.disabled=true
+    //         }else{
+    //           if (category.value ==""){
+    //             category.disabled=false
+    //           }else{
+    //             category.disabled=true
+    //           }
+    //         }
+    //       })
+    //   })
+      
+
     })
       
 

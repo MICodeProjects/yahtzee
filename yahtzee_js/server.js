@@ -44,6 +44,7 @@ io.on('connection', function(socket){
             game_name: game_name,
             players:JSON.stringify(json.players),
             scorecards:JSON.stringify(json.scorecards),
+            turn_order:JSON.stringify(json.turn_order),
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });
@@ -117,8 +118,9 @@ app.get('/games/:game_name/:username', async function(request, response) { // fr
     response.render("index", {
       username: username,
       game_name: game_name,
-      players: json.players, 
-    });
+      players: json.players,
+      turn_order:json.turn_order
+  });
   } catch (error) {
     console.error(error.message);
     response.status(500).send("An error occurred while fetching data.");

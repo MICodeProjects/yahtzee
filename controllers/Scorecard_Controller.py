@@ -26,10 +26,10 @@ def game_connection_data(game_name,username): # given a game name, return all th
     game_name=game_name
     players = Scorecard.get_all_game_usernames(game_name)["data"]
     scorecards = Scorecard.get_all_game_scorecards(game_name)["data"]
+    turn_order = Scorecard.get_game_turn_order(game_name)["data"]
 
-    scorecard_id = Scorecard.get(name=f"{game_name}|{username}")
     players.remove(username) # remove the current user from tshe list of players
     players.insert(0, username) # add the current user to the front of the list of players
 
-    return json.dumps({"scorecards":scorecards, "players":players}) # return all the scorecards and players
+    return json.dumps({"scorecards":scorecards, "players":players, "turn_order":turn_order}) # return all the scorecards and players
 

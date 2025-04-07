@@ -343,8 +343,14 @@ class Scorecard:
                         "data":error}
         finally:
             db_connection.close()
+    
+    def get_game_turn_order(self, game_name):
+        turn_order = {}
+        players = self.get_all_game_scorecards(game_name)["data"]
+        for player in players:
+            turn_order[player["turn_order"]] =player["name"].split("|")[1]
 
-
+        return {"status":"success", "data":turn_order}
         
    
 
