@@ -1,5 +1,108 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="{{ url_for('static',filename='./yahtzee_js/styles.css') }}"> 
+<!-- <link rel="stylesheet" href="{{ url_for('static',filename='./styles.css') }}">  -->
+
+<style>
+  body {
+    /* display: flex; */
+    font-family: Helvetica;
+    line-height: 1.5;
+    min-height: 100vh;
+    background: #f3f3f3;
+    flex-direction: column;
+    margin: 20px;
+    padding: 10px 20px;
+    /* align-items: center; */
+
+}
+
+
+.game_button{
+    width: 150px;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.game_name_input{
+    width:400px;
+}
+.nav{
+    display: flex;
+    align-items:start;
+}
+
+head{
+    display: flex;
+    align-items: start;
+}
+
+
+.login_form {
+    display: flex;
+    border-radius: 15px;
+    padding: 10px 20px;
+    flex-direction: column;
+    width: 40%;
+    /* align-items: center; */
+}
+
+.game_form{
+    display: flex;
+    border-radius: 15px;
+    padding: 10px;
+    flex-direction:row;
+}
+
+.list{
+    padding-bottom: 10px;
+}
+
+h1 {
+    color: #dd61db;
+}
+
+.die {
+    border: 2px solid #f3f3f3;
+    border-radius: 10px;
+}
+
+
+input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.button {
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    background-color: #dd61db;
+    width: 100%;
+    font-size: 16px;
+}
+
+
+.reserved {
+    border: 2px solid #a32323;
+    border-radius: 10px;
+}
+
+.good {
+    color: green;
+}
+
+.bad {
+    color: #a32323;
+}
+</style>
 
 <nav class="nav navbar navbar-expand-lg navbar-light bg-light">
     {% if context=="LOGIN" or context=="CREATE" %}

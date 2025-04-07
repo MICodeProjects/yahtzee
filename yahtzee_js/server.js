@@ -1,3 +1,4 @@
+const fetch=require('node-fetch')
 let express = require('express');
 let app = express();
 
@@ -7,6 +8,7 @@ let io = require('socket.io')(server);
 
 //Middleware
 const ejs = require('ejs');
+const { ok } = require('assert');
 app.use(express.static('public')); //specify location of static assests
 app.set('views', __dirname + '/views'); //specify location of templates
 app.set('view engine', 'ejs'); //specify templating library
@@ -19,8 +21,9 @@ io.on('connection', function(socket){
 
   socket.on("game_connection", async function(data){
     socket.join(data.game_name)
-    const request_header = [data.game_name]
-    const link = `http://127.0.0.1:8080/scorecards/game_connection_data/${data.game_name}`
+    game_name = data.game_name
+    username = data.username
+    const link = `http://127.0.0.1:8080/scorecards/game_connection_data/${data.game_name}/${username}`
     // fetch data
       try {
         const response = await fetch(link);
@@ -33,20 +36,17 @@ io.on('connection', function(socket){
 
         // getting data from fetch and the status
         const json = await response.json()
-        console.log(`Json should be ${JSON.stringify(json)}`)
 
-
-          
           
           // emit game_connection data to all clients
           io.to(data.game_name).emit('game_connection', { // what it emits at the game connection to all the clients.
-            username: data.username,
-            game_name: data.game_name,
-            scorecards:JSON.stringify(json),
+            username: username,
+            game_name: game_name,
+            players:JSON.stringify(json.players),
+            scorecards:JSON.stringify(json.scorecards),
             num_game_connections: io.sockets.adapter.rooms.get(data.game_name).size
 
           });
-       // ISSUE: players and game_name are not registered JSON. they do not register on the other end. so we cannot access the scorecards.
   
       } catch (error) {
           console.error(error.message);
@@ -65,10 +65,33 @@ io.on('connection', function(socket){
     });
   });
 
+  // remember: client emits, then server recieves w/ socket.on, then emits to clients w/ io.to
+  socket.on('valid_score', async function(data) {
+    console.log('Socket valid_score event:', data);
+    // update DB
+    const link = `http://127.0.0.1:8080/scorecards/scorecards_update`
+    
+    const response = await fetch(link, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ categories: data.categories, scorecard_name:data.scorecard_name})
+    });
 
- 
+    if (!response.ok){
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+      // Emit the valid score event to all players
+      io.to(data.game_name).emit('valid_score', {
+          username: data.username,
+          scorecard: data.categories
+      });
+      console.log("Server emitted valid score event")
+  });
+
 });
-
 
 
 
@@ -77,12 +100,29 @@ app.get('/games/:game_name/:username', async function(request, response) { // fr
   let username = request.params.username;
   let game_name = request.params.game_name;
 
-  response.status(200);
-  response.setHeader('Content-Type', 'text/html')
-  response.render("index", {
-    username: username,
-    game_name: game_name,
-  });
+  const link = `http://127.0.0.1:8080/scorecards/game_connection_data/${game_name}/${username}`
+  try {
+    const response1 = await fetch(link);
+    if (!response1.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    // getting data from fetch and the status
+    const json = await response1.json()
+    console.log(`Json players: ${JSON.stringify(json.players)}`)
+
+    // Render the EJS template with the data
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html');
+    response.render("index", {
+      username: username,
+      game_name: game_name,
+      players: json.players, 
+    });
+  } catch (error) {
+    console.error(error.message);
+    response.status(500).send("An error occurred while fetching data.");
+  }
 });
 
 //start the server. node server is the only one that renders the actual yahtzee game.

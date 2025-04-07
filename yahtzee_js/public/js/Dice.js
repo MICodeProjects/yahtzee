@@ -143,7 +143,7 @@ class Dice{
        let i=0;
         for (let die of this.dice_elements){
             if (new_dice_values[i] !=-1){
-                die.src=`/public/img/${this.photo_names[new_dice_values[this.dice_elements.indexOf(die)]]}.svg`;
+                die.src=`/img/${this.photo_names[new_dice_values[this.dice_elements.indexOf(die)]]}.svg`;
             }
 
             i++;

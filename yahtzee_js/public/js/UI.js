@@ -11,8 +11,9 @@ let roll_button = document.getElementById('roll_button');
 roll_button.addEventListener('click', roll_dice_handler);
 
 
-let username = document.getElementById("uname").value
+const username = document.getElementById("uname").value
 console.log(`UI.js: Username is ${username}`)
+const game_name = document.getElementById("gname").value
 
 let save_game = document.getElementById("save_game");
 save_game.addEventListener('click', save_game_handler)
@@ -34,7 +35,7 @@ window.dice = dice; //useful for testing to add a reference to global window obj
 
 
 //-----Gamecard Setup---------//
-let category_elements = Array.from(document.getElementsByClassName("category"));
+let category_elements = Array.from(document.getElementsByClassName(`category ${username}`));
 for (let category of category_elements){
     category.addEventListener('keypress', function(event){
         if (event.key === 'Enter') {
@@ -43,7 +44,7 @@ for (let category of category_elements){
         }
     });
 }
-let score_elements = Array.from(document.getElementsByClassName("score"));
+let score_elements = Array.from(document.getElementsByClassName(`score ${username}`));
 let gamecard = new Gamecard(category_elements, score_elements, dice);
 window.gamecard = gamecard; //useful for testing to add a reference to global window object
 
@@ -70,28 +71,30 @@ function roll_dice_handler(){
 }
 
 function enter_score_handler(event){
-    console.log("Score entry attempted for: ", event.target.id, " for ", event.target.value);
+    console.log("Score entry attempted for: ", event.target.id, " for ", event.target.value, "username ", username);
     if (dice.get_sum() == 0){
         display_feedback("ERROR ERROR cannot enter a score when dice are blank", "bad")  
 
-    }else if (gamecard.is_valid_score(event.target.id.replace("_input",""), event.target.value)==true){
+    }else if (gamecard.is_valid_score(event.target.id.replace(`_input_${username}`,""), event.target.value, username)==true){
         event.target.disabled=true;
-        gamecard.update_scores();
+        gamecard.update_scores(username);
         display_feedback("Score entered successfully.", "good")
         document.getElementById("rolls_remaining").innerHTML = 3;
         dice.reset()
 
         
         // since it's valid, emit a socket event valid score
-        scorecard = JSON.stringify(Gamecard.to_object()) // get scorecard
-        socket.emit("valid_score", {username:username, scorecard:scorecard})
+        let categories = JSON.stringify(gamecard.to_object(username)) // get scorecard
+        socket.emit("valid_score", {game_name:game_name, username:username, categories:categories, scorecard_name:`${game_name}|${username}`})
+        console.log(`Emitting event 'valid_score'... with scorecard_name ${game_name}|${username}`)
+
         
 
     }else{
         display_feedback("Invalid score entered", "bad") 
 
     }
-    if (gamecard.is_finished()==true){
+    if (gamecard.is_finished(username)==true){
         display_feedback("Scorecard completed!! Hooray.", "good") 
         dice.reset()
         document.getElementById("rolls_remaining").innerHTML = 0;
@@ -103,7 +106,7 @@ function enter_score_handler(event){
 }
 
 function save_game_handler(event){
-    let savedGame = gamecard.to_object()
+    let savedGame = gamecard.to_object(username)
     localStorage.setItem("yahtzee", JSON.stringify(savedGame));
     display_feedback("Game saved successfully", "good")
     console.log(savedGame)
@@ -120,7 +123,7 @@ function load_game_handler(event){
     }else{
         display_feedback("No game can be loaded", "bad")
     }
-    gamecard.update_scores()
+    gamecard.update_scores(username)
 
     
 

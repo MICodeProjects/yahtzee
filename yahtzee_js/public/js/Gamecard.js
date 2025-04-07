@@ -12,12 +12,12 @@ class Gamecard{
      *
      * @return {Boolean} a Boolean value indicating whether the scorecard is full
      */
-    is_finished(){
-        let scoreObject = Object.keys(this.to_object()["upper"]).concat(Object.keys(this.to_object()["lower"]));
+    is_finished(username){
+        let scoreObject = Object.keys(this.to_object(username)["upper"]).concat(Object.keys(this.to_object(username)["lower"]));
         console.log(scoreObject)
         return scoreObject.every(function(category){
-            console.log(category, document.getElementById(`${category}_input`).disabled)
-            if (document.getElementById(`${category}_input`).disabled==true){
+            console.log(category, document.getElementById(`${category}_input_${username}`).disabled)
+            if (document.getElementById(`${category}_input_${username}`).disabled==true){
                 return true;
             }
             return false;
@@ -36,7 +36,7 @@ class Gamecard{
      * 
      * @return {Boolean} a Boolean value indicating whether the score is valid for the category
     */
-    is_valid_score(category, value){
+    is_valid_score(category, value, username){
         // check if value is int
         if (this.isNumeric(value)==false){
             return false;
@@ -48,7 +48,7 @@ class Gamecard{
         }
 
         // setting up
-        let scorecard = this.to_object()
+        let scorecard = this.to_object(username)
         let diceCounts = this.dice.get_counts()
 
         // upper category
@@ -83,7 +83,7 @@ class Gamecard{
             return ((diceCounts[5]==0 || diceCounts[0]==0)&& value==40);
 
         }
-        // doesnt work
+       
         if (category =="small_straight"){
             let sortedDice = this.dice.get_values().sort();
             console.log("sorted dice ", sortedDice)
@@ -116,16 +116,16 @@ class Gamecard{
     * 
     * @return {Number} an integer value representing the curent game score
     */
-    get_score(){
+    get_score(username){
         let total = 0;
 
  
-        let scorecard =this.to_object()
+        let scorecard =this.to_object(username)
         // Upper
-        let upperScore = Object.keys(scorecard["upper"]).reduce(function(acc,cur){
-            console.log(cur, acc)
-            if (document.getElementById(`${cur}_input`).disabled==true){
-                return acc + Number(document.getElementById(`${cur}_input`).value)
+        let upperScore = Object.keys(scorecard["upper"]).reduce(function(acc,category){
+            console.log(category, acc)
+            if (document.getElementById(`${category}_input_${username}`).disabled==true){
+                return acc + Number(document.getElementById(`${category}_input_${username}`).value)
             }
             return acc;
         },0)
@@ -136,10 +136,10 @@ class Gamecard{
             }
             
         // LOWER
-        let lowerScore = Object.keys(scorecard["lower"]).reduce(function(acc,cur){
-            console.log(cur, acc)
-            if (document.getElementById(`${cur}_input`).disabled==true){
-                return acc + Number(document.getElementById(`${cur}_input`).value)
+        let lowerScore = Object.keys(scorecard["lower"]).reduce(function(acc,category){
+            console.log(category, acc)
+            if (document.getElementById(`${category}_input_${username}`).disabled==true){
+                return acc + Number(document.getElementById(`${category}_input_${username}`).value)
             }
             return acc
         },0)
@@ -152,17 +152,17 @@ class Gamecard{
     /**
      * Updates all score elements for a scorecard
     */
-    update_scores(){
+    update_scores(username){
        let lowerScore=0;
        let upperScore=0;
        let upperBonus="";
 
-       let scorecard =this.to_object()
+       let scorecard =this.to_object(username)
        // Upper
-        upperScore = Object.keys(scorecard["upper"]).reduce(function(acc,cur){
-            console.log(cur, acc)
-            if (document.getElementById(`${cur}_input`).disabled==true){
-                return acc + Number(document.getElementById(`${cur}_input`).value)
+        upperScore = Object.keys(scorecard["upper"]).reduce(function(acc,category){
+            console.log(category, acc)
+            if (document.getElementById(`${category}_input_${username}`).disabled==true){
+                return acc + Number(document.getElementById(`${category}_input_${username}`).value)
             }
             return acc;
         },0)
@@ -173,25 +173,25 @@ class Gamecard{
         }
         
     // LOWER
-        lowerScore = Object.keys(scorecard["lower"]).reduce(function(acc,cur){
-            console.log(cur, acc)
-            if (document.getElementById(`${cur}_input`).disabled==true){
-                return acc + Number(document.getElementById(`${cur}_input`).value)
+        lowerScore = Object.keys(scorecard["lower"]).reduce(function(acc,category){
+            console.log(category, acc)
+            if (document.getElementById(`${category}_input_${username}`).disabled==true){
+                return acc + Number(document.getElementById(`${category}_input_${username}`).value)
             }
             return acc
         },0)
 
-       document.getElementById("upper_score").innerHTML = String(upperScore)
-       document.getElementById("upper_bonus").innerHTML = String(upperBonus)
+       document.getElementById(`upper_score_${username}`).innerHTML = String(upperScore)
+       document.getElementById(`upper_bonus_${username}`).innerHTML = String(upperBonus)
        if (upperBonus != ""){
             upperScore = upperScore + upperBonus
        }
-        document.getElementById("upper_total").innerHTML = String(upperScore)
+        document.getElementById(`upper_total_${username}`).innerHTML = String(upperScore)
        
 
-       document.getElementById("lower_score").innerHTML = String(lowerScore)
-       document.getElementById("upper_total_lower").innerHTML = String(upperScore);
-       document.getElementById("grand_total").innerHTML = String(upperScore + lowerScore);
+       document.getElementById(`lower_score_${username}`).innerHTML = String(lowerScore)
+       document.getElementById(`upper_total_lower_${username}`).innerHTML = String(upperScore);
+       document.getElementById(`grand_total_${username}`).innerHTML = String(upperScore + lowerScore);
     }
 
     /**
@@ -219,26 +219,26 @@ class Gamecard{
      *
      * @param {Object} gameObject the object version of the scorecard
     */
-    load_scorecard(score_info){
+    load_scorecard(score_info, username){
         let names = ["upper", "lower", "rolls_remaining"]
         names.forEach(function(section){
-            if (section != "rolls_remaining"){
+            if (section != `rolls_remaining`){
                 Object.keys(score_info[section]).forEach(function(category){
                     if (score_info[section][category] == -1){
-                        document.getElementById(`${category}_input`).value = "";
-                        document.getElementById(`${category}_input`).disabled = false;
+                        document.getElementById(`${category}_input_${username}`).value = "";
+                        document.getElementById(`${category}_input_${username}`).disabled = false;
 
                     }else{
-                        document.getElementById(`${category}_input`).value = score_info[section][category];
-                        document.getElementById(`${category}_input`).disabled = true;
+                        document.getElementById(`${category}_input_${username}`).value = score_info[section][category];
+                        document.getElementById(`${category}_input_${username}`).disabled = true;
                     }
 
                 })
             }else{
-                document.getElementById("rolls_remaining").innerHTML = score_info["rolls_remaining"]
+                document.getElementById(`rolls_remaining`).innerHTML = score_info["rolls_remaining"]
             }
         })
-        this.update_scores();
+        this.update_scores(username);
     }
 
     /**
@@ -270,7 +270,7 @@ class Gamecard{
 
 
 
-    to_object(){
+    to_object(username){
         let scorecardObject = {
             "rolls_remaining":0,
             "upper":{
@@ -291,20 +291,20 @@ class Gamecard{
                 "chance":-1
             }
         }
-        scorecardObject["rolls_remaining"] = Number(document.getElementById("rolls_remaining").innerHTML)
+        scorecardObject["rolls_remaining"] = Number(document.getElementById(`rolls_remaining`).innerHTML)
         
         for (let category in scorecardObject.upper){
-                    if (document.getElementById(category+"_input").disabled == false || document.getElementById(category+"_input").value == ""){
+                    if (document.getElementById(`${category}_input_${username}`).disabled == false || document.getElementById(`${category}_input_${username}`).value == ""){
                         scorecardObject["upper"][category] =-1
                     }else {
-                        scorecardObject["upper"][category] = Number(document.getElementById(category+"_input").value);
+                        scorecardObject["upper"][category] = Number(document.getElementById(`${category}_input_${username}`).value);
                     }
                 }
         for (let category in scorecardObject.lower){
-                    if (document.getElementById(category+"_input").disabled == false || document.getElementById(category+"_input").value == ""){
+                    if (document.getElementById(`${category}_input_${username}`).disabled == false || document.getElementById(`${category}_input_${username}`).value == ""){
                         scorecardObject["lower"][category] =-1
                     }else {
-                        scorecardObject["lower"][category] = Number(document.getElementById(category+"_input").value);
+                        scorecardObject["lower"][category] = Number(document.getElementById(`${category}_input_${username}`).value);
                     }
                 }
 
@@ -337,7 +337,7 @@ class Gamecard{
         // }
 
 
-        return scorecardObject;
+        // return scorecardObject;
     }
 
     isNumeric(scoreInput) {

@@ -7,16 +7,29 @@ from models import Scorecard_Model
 yahtzeeDB_location = './models/yahtzeeDB.db'
 Scorecard= Scorecard_Model.Scorecard(yahtzeeDB_location, "scorecards", "users", "games")
 
-def scorecards_update(game_name): # update scorecard
-    game_name=game_name
-    Scorecard.update(name=game_name)
+def scorecards_update(): # update scorecard
+    print(request.json)
+    categories = json.loads(request.json.get("categories"))
+    scorecard_name = request.json.get("scorecard_name")
+    print(f"categories: {categories}, scorecard_name: {scorecard_name}, type categories {type(categories)}, type scorecard name {type(scorecard_name)}")
+    scorecard_id = Scorecard.get(name=scorecard_name)
+    if scorecard_id["status"]=="error":
+        return {"status":"error", "data":scorecard_id["data"]}
+    update = Scorecard.update(id=int(scorecard_id["data"]["id"]), categories=categories)
+    if update["status"] == "error":
+        return {"status":"error", "data":update["data"]}
 
-def game_connection_data(game_name): # given a game name, return all the scorecards in that game
-    game_name=game_name
-    players = Scorecard.get_all_game_usernames(game_name)
-    scorecards = Scorecard.get_all_game_scorecards(game_name)
-    print(players["data"], scorecards["data"])
+    return {"status":"success", "data":"Scorecard updated successfully"}
+    
 
-    print(type(json.dumps(scorecards["data"])))
-    return json.dumps(scorecards["data"])
+def game_connection_data(game_name,username): # given a game name, return all the scorecards in that game
+    game_name=game_name
+    players = Scorecard.get_all_game_usernames(game_name)["data"]
+    scorecards = Scorecard.get_all_game_scorecards(game_name)["data"]
+
+    scorecard_id = Scorecard.get(name=f"{game_name}|{username}")
+    players.remove(username) # remove the current user from tshe list of players
+    players.insert(0, username) # add the current user to the front of the list of players
+
+    return json.dumps({"scorecards":scorecards, "players":players}) # return all the scorecards and players
 

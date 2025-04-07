@@ -31,8 +31,8 @@ app.add_url_rule('/games/delete/<game_name>/<username>', view_func=Game_Controll
 app.add_url_rule('/games/<game_name>/<username>', view_func=Game_Controller.game_user_game_page, methods = ['GET']) # specific game_name for a user
 
 # scorecards
-app.add_url_rule('/scorecards/update/<scorecard_id>', view_func=Scorecard_Controller.scorecards_update, methods = ['POST']) # update scorecard
-app.add_url_rule('/scorecards/game_connection_data/<game_name>', view_func=Scorecard_Controller.game_connection_data, methods = ['GET']) # given a game_name, what are all the scorecards associated w/ it?
+app.add_url_rule('/scorecards/scorecards_update', view_func=Scorecard_Controller.scorecards_update, methods = ['POST']) # update scorecard
+app.add_url_rule('/scorecards/game_connection_data/<game_name>/<username>', view_func=Scorecard_Controller.game_connection_data, methods = ['GET']) # given a game_name, what are all the scorecards associated w/ it?
 
 
 

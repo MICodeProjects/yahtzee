@@ -44,58 +44,82 @@
             <feedback content id="feedback"></feedback>
           </section>
           <input type="hidden" id="uname" name="username" value="<%=username%>"> 
+          <input type="hidden" id="gname" name="game_name" value="<%=game_name%>">
 
           <section id="scorecard">
             <table>
               <tr>
                 <th>UPPER SECTION</th>
                 <th>HOW TO SCORE</th>
-                <th>#1</th>
+                <% players.forEach(function(player) { %>
+                <th><%=player%></th>
+                <% }) %>
               </tr>
               <tr>
                 <td>one <img src="/img/one.svg" width="20" /> =1</td>
                 <td>Count and Add Only one</td>
-                <td><input type="text" class="upper category" id="one_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                    <td><input type="text" class="upper category <%=player%>" id="one_input_<%=player%>" size="3"></td>
+
+                <% }) %>
               </tr>
               <tr>
                 <td>two <img src="/img/two.svg" width="20" /> =2</td>
                 <td>Count and Add Only two</td>
-                <td><input type="text" class="upper category" id="two_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                    <td><input type="text" class="upper category <%=player%>" id="two_input_<%=player%>" size="3"></td>
+                  
+                  <% }) %>
               </tr>
               <tr>
                 <td>three <img src="/img/three.svg" width="20" /> =3</td>
                 <td>Count and Add Only three</td>
-                <td><input type="text" class="upper category" id="three_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                    <td><input type="text" class="upper category <%=player%>" id="three_input_<%=player%>" size="3"></td>
+
+                <% }) %>
               </tr>
               <tr>
                 <td>four <img src="/img/four.svg" width="20" /> =4</td>
                 <td>Count and Add Only four</td>
-                <td><input type="text" class="upper category" id="four_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                    <td><input type="text" class="upper category <%=player%>" id="four_input_<%=player%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>five <img src="/img/five.svg" width="20" /> =5</td>
                 <td>Count and Add Only five</td>
-                <td><input type="text" class="upper category" id="five_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                    <td><input type="text" class="upper category <%=player%>" id="five_input_<%=player%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>six <img src="/img/six.svg" width="20" /> =6</td>
                 <td>Count and Add Only six</td>
-                <td><input type="text" class="upper category" id="six_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="upper category <%=player%>" id="six_input_<%=player%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>TOTAL SCORE</td>
                 <td> -- </td>
-                <td class="upper score" id="upper_score"></td>
+                <% players.forEach(function(player) { %>
+                <td class="upper score <%=player%>" id="upper_score_<%=username%>"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>BONUS</td>
                 <td> If total score is more than 63, score 35 </td>
-                <td class="upper score" id="upper_bonus"></td>
+                <% players.forEach(function(player) { %>
+                <td class="upper score <%=player%>" id="upper_bonus_<%=username%>"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>TOTAL</td>
                 <td> of upper section </td>
-                <td class="upper score" id="upper_total"></td>
+                <% players.forEach(function(player) { %>
+                    <td class="upper score <%=player%>" id="upper_total_<%=player%>"></td>
+                <% }) %>
               </tr>
               <tr>
                 <th>LOWER SECTION</th>
@@ -105,52 +129,72 @@
               <tr>
                 <td>3 of a kind</td>
                 <td>Add Total of All Dice</td>
-                <td><input type="text" class="lower category" id="three_of_a_kind_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="lower category <%=player%>" id="three_of_a_kind_input_<%=player%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>4 of a kind</td>
                 <td>Add Total of All Dice</td>
-                <td><input type="text" class="lower category" id="four_of_a_kind_input" size="3"></td>
+              <% players.forEach(function(player) { %>
+                <td><input type="text" class="lower category <%=player%>" id="four_of_a_kind_input_<%=username%>" size="3"></td>
+              <% }) %>
               </tr>
               <tr>
                 <td>Full House</td>
                 <td>Score 25</td>
-                <td><input type="text" class="lower category" id="full_house_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="lower category <%=player%>" id="full_house_input_<%=username%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Small Straight (Sequence of 4)</td>
                 <td>Score 30</td>
-                <td><input type="text" class="lower category" id="small_straight_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="lower category <%=player%>" id="small_straight_input_<%=username%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Large Straight (Sequence of 5)</td>
                 <td>Score 40</td>
-                <td><input type="text" class="lower category" id="large_straight_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="lower category <%=player%>" id="large_straight_input_<%=username%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Yahtzee (5 of a kind)</td>
                 <td>Score 50</td>
-                <td><input type="text" class="lower category" id="yahtzee_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="lower category <%=player%>" id="yahtzee_input_<%=username%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Chance</td>
                 <td>Score Total Of all 5 Dice</td>
-                <td><input type="text" class="lower category" id="chance_input" size="3"></td>
+                <% players.forEach(function(player) { %>
+                  <td><input type="text" class="lower category <%=player%>" id="chance_input_<%=username%>" size="3"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Total (Of Lower Section) </td>
                 <td></td>
-                <td class="lower score" id="lower_score"></td>
+                <% players.forEach(function(player) { %>
+                  <td class="lower score <%=player%>" id="lower_score_<%=username%>"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Total (Of Upper Section)</td>
                 <td></td>
-                <td class="lower score" id="upper_total_lower"></td>
+                <% players.forEach(function(player) { %>
+                  <td class="lower score <%=player%>" id="upper_total_lower_<%=username%>"></td>
+                <% }) %>
               </tr>
               <tr>
                 <td>Grand Total </td>
                 <td></td>
-                <td class="lower score" id="grand_total"></td>
+                <% players.forEach(function(player) { %>
+                  <td class="lower score <%=player%>" id="grand_total_<%=username%>"></td>
+                <% }) %>
               </tr>
             </table>
           </section>
@@ -166,7 +210,6 @@
            </div>
            <h4>Players in the Game: <span id="game_players">0</span></h4>
            <h4>Yahtzee Players Currently Online: <span id="total_players">0</span></h4>
-
           <footer></footer>
           <script  src="/js/UI.js" type="module"></script>
           <script>
@@ -182,15 +225,17 @@
         //keep track of the current number of connected game players
         let game_players_element = document.getElementById('game_players');
         game_players_element.innerText = data.num_game_connections;
+
+
+        let players = JSON.parse(data.players) // what client emits with game connection.
+        let scorecards = JSON.parse(data.scorecards)
+        console.log(`In socket.on. players: ${players} \n scorecards: ${data.scorecards} `)
+        console.log("Players:", JSON.stringify(players));
+
+
+        // add join game message to chat
         let chat_display_element = document.getElementById('chat_display');
         let text = " has joined the game!\n";
-
-        // let players = data.players // what client emits with game connection.
-        let scorecards = JSON.parse(data.scorecards)
-        console.log(`\n scorecards: ${data.scorecards}`)
-
-        
-        
         if(data.username) // if there's a username: add this message to the chat.
            text = data.username+text;
 
@@ -218,24 +263,26 @@
     });
 
     // when someone else has a valid score
-    // socket.on("valid_score", function(data){
-    //   let username = data.username
-    //   let scorecard=data.scorecard
-    //   console.log(`${username} has a new valid scorecard: ${scorecard}`)
-  //     let link = `http://127.0.0.1:8080/scorecards/scorecards_update/${game_name}`
-  //     try {
-  //     const response = await fetch(link);
-  //     if (!response.ok) {
-  //         throw new Error(`Response status: ${response.status}`);
-  //     }
+    socket.on("valid_score",  function(data){
+      console.log(`Valid score recieved from ${data.username}: ${data.scorecard}`)
+      let scored_username = data.username
+      let scored_scorecard=JSON.parse(data.scorecard)
+      
+      // modifying player who scored's scorecard
+      let tiers = ["upper", "lower"]
+      // upper
+      tiers.forEach(function(tier){
+        Object.keys(scored_scorecard[tier]).forEach(function(category){
+          if (scored_scorecard[tier][category]!=-1){
+            document.getElementById(`${category}_input_${scored_username}`).value = scored_scorecard[tier][category]
+            document.getElementById(`${category}_input_${scored_username}`).disabled=true
+          }
+        })
+      })
+    })
+      
 
-  //      scorecards = await response.json();
-  //     console.log(`Scorecards : ${scorecards}`);
-  //     } catch (error) {
-  //     console.error(error.message);
-  // }
-
-    // })
+    
 
     // when player reserves/unreserves die, add event listener that socket emits "reserves die"
     // socket.on this will change the other player's screens
