@@ -19,7 +19,7 @@ def scorecards_update(): # update scorecard
     if update["status"] == "error":
         return {"status":"error", "data":update["data"]}
 
-    return {"status":"success", "data":"Scorecard updated successfully"}
+    return {"status":"success", "data":"success!"}
     
 
 def game_connection_data(game_name,username): # given a game name, return all the scorecards in that game

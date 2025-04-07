@@ -19,6 +19,9 @@ io.on('connection', function(socket){
     num_total_connections: io.engine.clientsCount
   }); 
 
+  socket.on("ui.js_game_connection", async function(data){
+    socket.join(data.game_name)
+  })
   socket.on("game_connection", async function(data){
     socket.join(data.game_name)
     game_name = data.game_name
@@ -66,6 +69,13 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on("die_reserved", function(data){
+    io.to(data.game_name).emit("die_reserved", {
+      "die_position":data.die_position,
+      "username":data.username
+    })
+  })
+
   // remember: client emits, then server recieves w/ socket.on, then emits to clients w/ io.to
   socket.on('valid_score', async function(data) {
     console.log('Socket valid_score event:', data);
@@ -77,7 +87,7 @@ io.on('connection', function(socket){
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ categories: data.categories, scorecard_name:data.scorecard_name})
+      body: JSON.stringify({ categories: data.categories, scorecard_name:data.scorecard_name, game_name:game_name})
     });
 
     if (!response.ok){
@@ -91,6 +101,16 @@ io.on('connection', function(socket){
       });
       console.log("Server emitted valid score event")
   });
+  
+  // when dice are rolled
+  socket.on("dice_rolled", function(data){
+    io.to(data.game_name).emit('dice_rolled', {
+      dice_values:data.dice_values,
+      rolls_remaining:data.rolls_remaining
+    })
+    console.log("Server emitted dice_rolled event")
+
+  })
 
 });
 

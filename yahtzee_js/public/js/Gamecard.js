@@ -220,24 +220,15 @@ class Gamecard{
      * @param {Object} gameObject the object version of the scorecard
     */
     load_scorecard(score_info, username){
-        let names = ["upper", "lower", "rolls_remaining"]
-        names.forEach(function(section){
-            if (section != `rolls_remaining`){
-                Object.keys(score_info[section]).forEach(function(category){
-                    if (score_info[section][category] == -1){
-                        document.getElementById(`${category}_input_${username}`).value = "";
-                        document.getElementById(`${category}_input_${username}`).disabled = false;
-
-                    }else{
-                        document.getElementById(`${category}_input_${username}`).value = score_info[section][category];
-                        document.getElementById(`${category}_input_${username}`).disabled = true;
-                    }
-
-                })
-            }else{
-                document.getElementById(`rolls_remaining`).innerHTML = score_info["rolls_remaining"]
-            }
+        let tiers = ["upper", "lower"]
+      tiers.forEach(function(tier){
+        Object.keys(score_info[tier]).forEach(function(category){
+          if (score_info[tier][category]!=-1){
+            document.getElementById(`${category}_input_${username}`).value = score_info[tier][category]
+            document.getElementById(`${category}_input_${username}`).disabled=true
+          }
         })
+      })
         this.update_scores(username);
     }
 

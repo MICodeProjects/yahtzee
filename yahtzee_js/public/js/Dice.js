@@ -102,6 +102,7 @@ class Dice{
     /**
      * Resets all dice_element pictures to blank, and unreserved
      * <br> Uses this.#setDice to update dice
+     * rolls_remaining to 3
     */
     reset(){
         for (let die of this.dice_elements){

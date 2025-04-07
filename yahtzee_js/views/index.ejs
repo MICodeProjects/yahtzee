@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Yahtzee: <span id ="username"><%=username%></span></title>
+    <title>Yahtzee: <%=username%></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/socket.io/socket.io.js"> </script>
@@ -39,11 +39,11 @@
           <section id="feedback">
             <feedback content id="feedback"></feedback>
           </section>
-            <p id="turn_order">It is your turn!</p>
+            <p id="turn_order" value="true">It is your turn!</p>
 
           <input type="hidden" id="uname" name="username" value="<%=username%>"> 
           <input type="hidden" id="gname" name="game_name" value="<%=game_name%>">
-          <input type="hidden" id="current_turn" name="current_turn" value="<%=turn_order.current_turn%>">
+          <input type="hidden" id="current_turn" name="current_turn" value="1">
 
           <section id="scorecard">
             <table>
@@ -103,14 +103,14 @@
                 <td>TOTAL SCORE</td>
                 <td> -- </td>
                 <% players.forEach(function(player) { %>
-                <td class="upper score <%=player%>" id="upper_score_<%=username%>"></td>
+                <td class="upper score <%=player%>" id="upper_score_<%=player%>"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>BONUS</td>
                 <td> If total score is more than 63, score 35 </td>
                 <% players.forEach(function(player) { %>
-                <td class="upper score <%=player%>" id="upper_bonus_<%=username%>"></td>
+                <td class="upper score <%=player%>" id="upper_bonus_<%=player%>"></td>
                 <% }) %>
               </tr>
               <tr>
@@ -136,63 +136,63 @@
                 <td>4 of a kind</td>
                 <td>Add Total of All Dice</td>
               <% players.forEach(function(player) { %>
-                <td><input type="text" class="lower category <%=player%>" id="four_of_a_kind_input_<%=username%>" size="3"></td>
+                <td><input type="text" class="lower category <%=player%>" id="four_of_a_kind_input_<%=player%>" size="3"></td>
               <% }) %>
               </tr>
               <tr>
                 <td>Full House</td>
                 <td>Score 25</td>
                 <% players.forEach(function(player) { %>
-                  <td><input type="text" class="lower category <%=player%>" id="full_house_input_<%=username%>" size="3"></td>
+                  <td><input type="text" class="lower category <%=player%>" id="full_house_input_<%=player%>" size="3"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Small Straight (Sequence of 4)</td>
                 <td>Score 30</td>
                 <% players.forEach(function(player) { %>
-                  <td><input type="text" class="lower category <%=player%>" id="small_straight_input_<%=username%>" size="3"></td>
+                  <td><input type="text" class="lower category <%=player%>" id="small_straight_input_<%=player%>" size="3"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Large Straight (Sequence of 5)</td>
                 <td>Score 40</td>
                 <% players.forEach(function(player) { %>
-                  <td><input type="text" class="lower category <%=player%>" id="large_straight_input_<%=username%>" size="3"></td>
+                  <td><input type="text" class="lower category <%=player%>" id="large_straight_input_<%=player%>" size="3"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Yahtzee (5 of a kind)</td>
                 <td>Score 50</td>
                 <% players.forEach(function(player) { %>
-                  <td><input type="text" class="lower category <%=player%>" id="yahtzee_input_<%=username%>" size="3"></td>
+                  <td><input type="text" class="lower category <%=player%>" id="yahtzee_input_<%=player%>" size="3"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Chance</td>
                 <td>Score Total Of all 5 Dice</td>
                 <% players.forEach(function(player) { %>
-                  <td><input type="text" class="lower category <%=player%>" id="chance_input_<%=username%>" size="3"></td>
+                  <td><input type="text" class="lower category <%=player%>" id="chance_input_<%=player%>" size="3"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Total (Of Lower Section) </td>
                 <td></td>
                 <% players.forEach(function(player) { %>
-                  <td class="lower score <%=player%>" id="lower_score_<%=username%>"></td>
+                  <td class="lower score <%=player%>" id="lower_score_<%=player%>"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Total (Of Upper Section)</td>
                 <td></td>
                 <% players.forEach(function(player) { %>
-                  <td class="lower score <%=player%>" id="upper_total_lower_<%=username%>"></td>
+                  <td class="lower score <%=player%>" id="upper_total_lower_<%=player%>"></td>
                 <% }) %>
               </tr>
               <tr>
                 <td>Grand Total </td>
                 <td></td>
                 <% players.forEach(function(player) { %>
-                  <td class="lower score <%=player%>" id="grand_total_<%=username%>"></td>
+                  <td class="lower score <%=player%>" id="grand_total_<%=player%>"></td>
                 <% }) %>
               </tr>
             </table>
@@ -207,13 +207,14 @@
            <br>
          
            </div>
-           <h4>Players in the Game: <span id="game_players">0</span></h4>
-           <h4>Yahtzee Players Currently Online: <span id="total_players">0</span></h4>
+           <!-- <h4>Players in the Game: <span id="game_players">0</span></h4>
+           <h4>Yahtzee Players Currently Online: <span id="total_players">0</span></h4> -->
           <footer></footer>
           <script  src="/js/UI.js" type="module"></script>
           <script>
 
     let socket = io.connect('/');//the default namespace
+    
 
     console.log('username check<%=username%>')
     socket.emit('game_connection', {username:'<%=username%>', game_name:'<%=game_name%>'}); // THIS goes to the server, not other clients.  HAS to go to server then clients, not from client to client.
@@ -222,9 +223,9 @@
         console.log(data.username+" has joined the game!") // works!
         console.log("socket.on('game_connection') connected")
         //keep track of the current number of connected game players
-        let game_players_element = document.getElementById('game_players');
-        game_players_element.innerText = data.num_game_connections;
-
+        // let game_players_element = document.getElementById('game_players');
+        // game_players_element.innerText = data.num_game_connections;
+      
 
         let players = JSON.parse(data.players) // what client emits with game connection.
         let scorecards = JSON.parse(data.scorecards)
@@ -238,15 +239,46 @@
 
         chat_display_element.value =  chat_display_element.value+text;
 
-        // add another scorecard for player using their scorecard. make sure its updated using the scorecard updated version they send
+        // make sure turns are right //----------------
+        let turn_order = <%- JSON.stringify(turn_order) %>
+        let current_turn = 1
+        let your_username = <%- JSON.stringify(username) %>
+
+        // changing turn flavor text
+        if (turn_order[current_turn] == your_username){
+          document.getElementById("turn_order").innerHTML = "It's your turn!"
+          document.getElementById("roll_button").disabled=false
+          document.getElementById("turn_order").value="true"
+          
+
+        }else{
+          document.getElementById("turn_order").innerHTML = `It's ${turn_order[current_turn]}'s turn.`
+          document.getElementById("roll_button").disabled=true
+          document.getElementById("turn_order").value="false"
+
+        }
+
+        // shift which scores are disabled. the person whos playing should only have their 
+        // filled scores disabled, but the other players have all the categories disabled.
+        let categories = []
+        players.forEach(function(player){
+          categories = document.getElementsByClassName(`category ${player}`)
+          for (let i=0; i<categories.length;i++){
+            if (player==turn_order[current_turn] && categories[i].value==""){
+              categories[i].disabled=false
+            }else{
+              categories[i].disabled=true
+            }
+          }
+        })
 
 
     });
 
     socket.on('connection', function(data) {
         console.log("New player has connected to Yahtzee!")
-        let total_players_element = document.getElementById('total_players');
-        total_players_element.innerText = data.num_total_connections;
+        // let total_players_element = document.getElementById('total_players');
+        // total_players_element.innerText = data.num_total_connections;
     });
 
     socket.on('chat', function(data) {
@@ -266,49 +298,52 @@
       let scored_scorecard=JSON.parse(data.scorecard)
       
       // modifying player who scored's scorecard
-      let tiers = ["upper", "lower"]
-      // upper
-      tiers.forEach(function(tier){
-        Object.keys(scored_scorecard[tier]).forEach(function(category){
-          if (scored_scorecard[tier][category]!=-1){
-            document.getElementById(`${category}_input_${scored_username}`).value = scored_scorecard[tier][category]
-            document.getElementById(`${category}_input_${scored_username}`).disabled=true
-          }
-        })
-      })
+      
 
       // change turn order after each valid score
-      // let players = document.getElementsByClassName("players").map(function(player){return player.innerText})
-      // let current_turn = parseInt(document.getElementById("current_turn").value)
-      // let num_players = parseInt(document.getElementById("game_players").innerHTML)
-      let turn_order = JSON.parse()
-      console.log(`erm....did it work? ${turn_order}`)
+      let players = <%- JSON.stringify(players) %>
+      let username = "<%- username %>"
+      let turn_order = <%- JSON.stringify(turn_order) %>
+      let current_turn = parseInt(document.getElementById("current_turn").value)
+      let num_players = players.length
+      console.log(`turn order: ${turn_order}`)
 
       // should you go to next person or reset loop?
       if (current_turn<num_players){
-        document.getElementById("current_turn")=current_turn+1
+        current_turn +=1
       }else{
-        document.getElementById("current_turn")=1
+        current_turn=1
       }
+      document.getElementById("current_turn").value=JSON.stringify(current_turn)
+
 
       // changing turn flavor text
+      if (turn_order[current_turn] == username){
+        document.getElementById("turn_order").innerHTML = "It's your turn!"
+        document.getElementById("roll_button").disabled=false
+        document.getElementById("turn_order").value="true"
+
+
+      }else{
+        document.getElementById("turn_order").innerHTML = `It's ${turn_order[current_turn]}'s turn.`
+        document.getElementById("roll_button").disabled=true
+        document.getElementById("turn_order").value="false"
+
+      }
 
       // shift which scores are disabled. the person whos playing should only have their 
       // filled scores disabled, but the other players have all the categories disabled.
-    //   players.forEach(function(player){
-    //       document.getElementsByClassName(`category ${player}`).forEach(function(category){
-    //         if (player!=turn_order["players"][current_turn]){
-    //           category.disabled=true
-    //         }else{
-    //           if (category.value ==""){
-    //             category.disabled=false
-    //           }else{
-    //             category.disabled=true
-    //           }
-    //         }
-    //       })
-    //   })
-      
+      let categories = []
+      players.forEach(function(player){
+        categories = document.getElementsByClassName(`category ${player}`)
+        for (let i=0; i<categories.length;i++){
+          if (player==turn_order[current_turn] && categories[i].value ==""){
+            categories[i].disabled=false
+          }else{
+            categories[i].disabled=true
+          }
+        }
+      })
 
     })
       
@@ -317,9 +352,7 @@
 
     // when player reserves/unreserves die, add event listener that socket emits "reserves die"
     // socket.on this will change the other player's screens
-
-    // when player roles dice, add event listener socket.emit("die_rolled")
-    // socket.on("die_rolled") update die.
+ 
 
 
     document.getElementById("chat_button").addEventListener('click', function(){

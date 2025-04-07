@@ -3,6 +3,7 @@ import Dice from './Dice.js';
 import Gamecard from './Gamecard.js';
 
 let socket=io.connect('/')
+socket = io.connect("/")
 
 
 //-------Dice Setup--------//
@@ -14,6 +15,9 @@ roll_button.addEventListener('click', roll_dice_handler);
 const username = document.getElementById("uname").value
 console.log(`UI.js: Username is ${username}`)
 const game_name = document.getElementById("gname").value
+
+socket.emit("ui.js_game_connection", { game_name: game_name});
+
 
 let save_game = document.getElementById("save_game");
 save_game.addEventListener('click', save_game_handler)
@@ -52,7 +56,14 @@ window.gamecard = gamecard; //useful for testing to add a reference to global wi
 //---------Event Handlers-------//
 function reserve_die_handler(event){
     console.log("Trying to reserve "+event.target.id);
-    dice.reserve(event.target);
+    if (document.getElementById("turn_order").innerHTML.includes("your")){
+        dice.reserve(event.target);
+        // emit socket event
+        console.log(event.target.id)
+        socket.emit("die_reserved", {"die_position":event.target.id, "game_name":game_name, "username":username})
+
+    }
+
 }
 
 function roll_dice_handler(){
@@ -68,6 +79,9 @@ function roll_dice_handler(){
     console.log("Dice values:", dice.get_values());
     console.log("Sum of all dice:", dice.get_sum());
     console.log("Count of all dice faces:", dice.get_counts());
+
+    socket.emit("dice_rolled", {"username":username, "dice_values":dice.get_values(), "rolls_remaining":document.getElementById("rolls_remaining").innerHTML, "game_name":game_name})
+    console.log(`Emitting dice_rolled event...`)
 }
 
 function enter_score_handler(event){
@@ -139,4 +153,27 @@ function display_feedback(message, context){
 }
 
 // socket smile
+   // update dice
+   socket.on("dice_rolled", function(data){
+    console.log(data)
+    let new_dice_values = data.dice_values
+    let new_rolls_remaining=parseInt(data.rolls_remaining)
+    dice.set(new_dice_values=new_dice_values, new_rolls_remaining=new_rolls_remaining)
+    console.log(`Socket recieved dice_rolled event: dice_values are ${new_dice_values}, rolls_remaining is ${new_rolls_remaining} Updating dice...`)
 
+})
+
+socket.on("valid_score", function(data){
+    // updating player who scored's scorecard
+    let username = data.username
+    let scorecard = JSON.parse(data.scorecard)
+    console.log(username, scorecard)
+    gamecard.load_scorecard(scorecard, username)
+    dice.reset()
+})
+
+socket.on("die_reserved", function(data){
+    if (data.username!=username){
+    dice.reserve(document.getElementById(data.die_position))
+    }
+})
